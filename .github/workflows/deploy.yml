@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy over SSH
         run: |
-          ssh -o StrictHostKeyChecking=no root@srv779899.hostinger.cloud "
+          ssh -o StrictHostKeyChecking=no root@69.62.75.192 "
             cd ~/SoftHireDocker &&
             git pull origin main &&
             docker-compose down &&
