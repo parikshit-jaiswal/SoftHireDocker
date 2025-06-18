@@ -1,0 +1,628 @@
+[
+  {
+    "occupationCode": "1111",
+    "jobType": "Chief executives and senior officials",
+    "standardAnnualSalary": 84100,
+    "lowerAnnualSalary": 54700
+  },
+  {
+    "occupationCode": "1121",
+    "jobType": "Production managers and directors in manufacturing",
+    "standardAnnualSalary": 51500,
+    "lowerAnnualSalary": 37100
+  },
+  {
+    "occupationCode": "1122",
+    "jobType": "Production managers and directors in construction",
+    "standardAnnualSalary": 50100,
+    "lowerAnnualSalary": 38200
+  },
+  {
+    "occupationCode": "1123",
+    "jobType": "Production managers and directors in mining and energy",
+    "standardAnnualSalary": 51600,
+    "lowerAnnualSalary": 40900
+  },
+  {
+    "occupationCode": "1131",
+    "jobType": "Financial managers and directors",
+    "standardAnnualSalary": 70000,
+    "lowerAnnualSalary": 45000
+  },
+  {
+    "occupationCode": "1132",
+    "jobType": "Marketing, sales and advertising directors",
+    "standardAnnualSalary": 83000,
+    "lowerAnnualSalary": 55600
+  },
+  {
+    "occupationCode": "1133",
+    "jobType": "Public relations and communications directors",
+    "standardAnnualSalary": 79900,
+    "lowerAnnualSalary": 62800
+  },
+  {
+    "occupationCode": "1134",
+    "jobType": "Purchasing managers and directors",
+    "standardAnnualSalary": 50300,
+    "lowerAnnualSalary": 37000
+  },
+  {
+    "occupationCode": "1135",
+    "jobType": "Charitable organisation managers and directors",
+    "standardAnnualSalary": 40900,
+    "lowerAnnualSalary": 33200
+  },
+  {
+    "occupationCode": "1136",
+    "jobType": "Human resource managers and directors",
+    "standardAnnualSalary": 49400,
+    "lowerAnnualSalary": 39400
+  },
+  {
+    "occupationCode": "1137",
+    "jobType": "Information technology directors",
+    "standardAnnualSalary": 80000,
+    "lowerAnnualSalary": 58800
+  },
+  {
+    "occupationCode": "1139",
+    "jobType": "Functional managers and directors not elsewhere classified",
+    "standardAnnualSalary": 69900,
+    "lowerAnnualSalary": 48800
+  },
+  {
+    "occupationCode": "1140",
+    "jobType": "Directors in logistics, warehousing and transport",
+    "standardAnnualSalary": 72200,
+    "lowerAnnualSalary": 45300
+  },
+  {
+    "occupationCode": "1150",
+    "jobType": "Managers and directors in retail and wholesale",
+    "standardAnnualSalary": 33100,
+    "lowerAnnualSalary": 26200
+  },
+  {
+    "occupationCode": "1162",
+    "jobType": "Senior police officers",
+    "standardAnnualSalary": 59100,
+    "lowerAnnualSalary": 55300
+  },
+  {
+    "occupationCode": "1163",
+    "jobType": "Senior officers in fire, ambulance, prison and related services",
+    "standardAnnualSalary": 53700,
+    "lowerAnnualSalary": 46300
+  },
+  {
+    "occupationCode": "1171",
+    "jobType": "Health services and public health managers and directors",
+    "standardAnnualSalary": 50500,
+    "lowerAnnualSalary": 43100
+  },
+  {
+    "occupationCode": "1172",
+    "jobType": "Social services managers and directors",
+    "standardAnnualSalary": 41000,
+    "lowerAnnualSalary": 33500
+  },
+  {
+    "occupationCode": "1211",
+    "jobType": "Managers and proprietors in agriculture and horticulture",
+    "standardAnnualSalary": 36000,
+    "lowerAnnualSalary": 28700
+  },
+  {
+    "occupationCode": "1212",
+    "jobType": "Managers and proprietors in forestry, fishing and related services",
+    "standardAnnualSalary": 30960,
+    "lowerAnnualSalary": 25200
+  },
+  {
+    "occupationCode": "1221",
+    "jobType": "Hotel and accommodation managers and proprietors",
+    "standardAnnualSalary": 32700,
+    "lowerAnnualSalary": 27000
+  },
+  {
+    "occupationCode": "1222",
+    "jobType": "Restaurant and catering establishment managers and proprietors",
+    "standardAnnualSalary": 30960,
+    "lowerAnnualSalary": 24700
+  },
+  {
+    "occupationCode": "1223",
+    "jobType": "Publicans and managers of licensed premises",
+    "standardAnnualSalary": 33500,
+    "lowerAnnualSalary": 28000
+  },
+  {
+    "occupationCode": "1224",
+    "jobType": "Leisure and sports managers and proprietors",
+    "standardAnnualSalary": 33100,
+    "lowerAnnualSalary": 26400
+  },
+  {
+    "occupationCode": "1225",
+    "jobType": "Travel agency managers and proprietors",
+    "standardAnnualSalary": 34200,
+    "lowerAnnualSalary": 27900
+  },
+  {
+    "occupationCode": "1231",
+    "jobType": "Health care practice managers",
+    "standardAnnualSalary": 43000,
+    "lowerAnnualSalary": 31300
+  },
+  {
+    "occupationCode": "1232",
+    "jobType": "Residential, day and domiciliary care managers and proprietors",
+    "standardAnnualSalary": 40900,
+    "lowerAnnualSalary": 32300
+  },
+  {
+    "occupationCode": "1233",
+    "jobType": "Early education and childcare services proprietors",
+    "standardAnnualSalary": 30960,
+    "lowerAnnualSalary": 23200
+  },
+  {
+    "occupationCode": "1241",
+    "jobType": "Managers in transport and distribution",
+    "standardAnnualSalary": 41500,
+    "lowerAnnualSalary": 31900
+  },
+  {
+    "occupationCode": "1242",
+    "jobType": "Managers in storage and warehousing",
+    "standardAnnualSalary": 32000,
+    "lowerAnnualSalary": 26800
+  },
+  {
+    "occupationCode": "1243",
+    "jobType": "Managers in logistics",
+    "standardAnnualSalary": 42400,
+    "lowerAnnualSalary": 34500
+  },
+  {
+    "occupationCode": "1251",
+    "jobType": "Property, housing and estate managers",
+    "standardAnnualSalary": 38400,
+    "lowerAnnualSalary": 29500
+  },
+  {
+    "occupationCode": "1252",
+    "jobType": "Garage managers and proprietors",
+    "standardAnnualSalary": 43700,
+    "lowerAnnualSalary": 32000
+  },
+  {
+    "occupationCode": "1253",
+    "jobType": "Hairdressing and beauty salon managers and proprietors",
+    "standardAnnualSalary": 30960,
+    "lowerAnnualSalary": 24200
+  },
+  {
+    "occupationCode": "1254",
+    "jobType": "Waste disposal and environmental services managers",
+    "standardAnnualSalary": 48800,
+    "lowerAnnualSalary": 31300
+  },
+  {
+    "occupationCode": "1255",
+    "jobType": "Managers and directors in the creative industries",
+    "standardAnnualSalary": 42000,
+    "lowerAnnualSalary": 29700
+  },
+  {
+    "occupationCode": "1256",
+    "jobType": "Betting shop and gambling establishment managers",
+    "standardAnnualSalary": 30960,
+    "lowerAnnualSalary": 23200
+  },
+  {
+    "occupationCode": "1257",
+    "jobType": "Hire services managers and proprietors",
+    "standardAnnualSalary": 34700,
+    "lowerAnnualSalary": 26400
+  },
+  {
+    "occupationCode": "1258",
+    "jobType": "Directors in consultancy services",
+    "standardAnnualSalary": 57500,
+    "lowerAnnualSalary": 31400
+  },
+  {
+    "occupationCode": "1259",
+    "jobType": "Managers and proprietors in other services not elsewhere classified",
+    "standardAnnualSalary": 34400,
+    "lowerAnnualSalary": 26700
+  },
+  {
+    "occupationCode": "2111",
+    "jobType": "Chemical scientists",
+    "standardAnnualSalary": 35200,
+    "lowerAnnualSalary": 29600
+  },
+  {
+    "occupationCode": "2112",
+    "jobType": "Biological scientists",
+    "standardAnnualSalary": 38000,
+    "lowerAnnualSalary": 28100
+  },
+  {
+    "occupationCode": "2113",
+    "jobType": "Biochemists and biomedical scientists",
+    "standardAnnualSalary": 44800,
+    "lowerAnnualSalary": 36700
+  },
+  {
+    "occupationCode": "2114",
+    "jobType": "Physical scientists",
+    "standardAnnualSalary": 47300,
+    "lowerAnnualSalary": 37000
+  },
+  {
+    "occupationCode": "2115",
+    "jobType": "Social and humanities scientists",
+    "standardAnnualSalary": 36400,
+    "lowerAnnualSalary": 25200
+  },
+  {
+    "occupationCode": "2119",
+    "jobType": "Natural and social science professionals not elsewhere classified",
+    "standardAnnualSalary": 41200,
+    "lowerAnnualSalary": 32000
+  },
+
+  {
+    "occupationCode": "2121",
+    "jobType": "Civil engineers",
+    "standardAnnualSalary": 45500,
+    "lowerAnnualSalary": 35300
+  },
+  {
+    "occupationCode": "2122",
+    "jobType": "Mechanical engineers",
+    "standardAnnualSalary": 42500,
+    "lowerAnnualSalary": 35600
+  },
+  {
+    "occupationCode": "2123",
+    "jobType": "Electrical engineers",
+    "standardAnnualSalary": 53500,
+    "lowerAnnualSalary": 43900
+  },
+  {
+    "occupationCode": "2124",
+    "jobType": "Electronics engineers",
+    "standardAnnualSalary": 49900,
+    "lowerAnnualSalary": 41900
+  },
+  {
+    "occupationCode": "2125",
+    "jobType": "Production and process engineers",
+    "standardAnnualSalary": 43700,
+    "lowerAnnualSalary": 35700
+  },
+  {
+    "occupationCode": "2126",
+    "jobType": "Aerospace engineers",
+    "standardAnnualSalary": 46400,
+    "lowerAnnualSalary": 38400
+  },
+  {
+    "occupationCode": "2127",
+    "jobType": "Engineering project managers and project engineers",
+    "standardAnnualSalary": 48800,
+    "lowerAnnualSalary": 39400
+  },
+  {
+    "occupationCode": "2129",
+    "jobType": "Engineering professionals not elsewhere classified",
+    "standardAnnualSalary": 42900,
+    "lowerAnnualSalary": 34400
+  },
+
+  {
+    "occupationCode": "2131",
+    "jobType": "IT project managers",
+    "standardAnnualSalary": 51900,
+    "lowerAnnualSalary": 41300
+  },
+  {
+    "occupationCode": "2132",
+    "jobType": "IT managers",
+    "standardAnnualSalary": 50900,
+    "lowerAnnualSalary": 40900
+  },
+  {
+    "occupationCode": "2133",
+    "jobType": "IT business analysts, architects and systems designers",
+    "standardAnnualSalary": 51700,
+    "lowerAnnualSalary": 39300
+  },
+  {
+    "occupationCode": "2134",
+    "jobType": "Programmers and software development professionals",
+    "standardAnnualSalary": 49400,
+    "lowerAnnualSalary": 36300
+  },
+  {
+    "occupationCode": "2135",
+    "jobType": "Cyber security professionals",
+    "standardAnnualSalary": 45300,
+    "lowerAnnualSalary": 35100
+  },
+  {
+    "occupationCode": "2136",
+    "jobType": "IT quality and testing professionals",
+    "standardAnnualSalary": 39900,
+    "lowerAnnualSalary": 31100
+  },
+  {
+    "occupationCode": "2137",
+    "jobType": "IT network professionals",
+    "standardAnnualSalary": 42800,
+    "lowerAnnualSalary": 36000
+  },
+  {
+    "occupationCode": "2139",
+    "jobType": "Information technology professionals not elsewhere classified",
+    "standardAnnualSalary": 44200,
+    "lowerAnnualSalary": 31600
+  },
+  {
+    "occupationCode": "2141",
+    "jobType": "Web design professionals",
+    "standardAnnualSalary": 41300,
+    "lowerAnnualSalary": 29000
+  },
+  {
+    "occupationCode": "2142",
+    "jobType": "Graphic and multimedia designers",
+    "standardAnnualSalary": 30960,
+    "lowerAnnualSalary": 25100
+  },
+  {
+    "occupationCode": "2151",
+    "jobType": "Conservation professionals",
+    "standardAnnualSalary": 36600,
+    "lowerAnnualSalary": 30600
+  },
+  {
+    "occupationCode": "2152",
+    "jobType": "Environment professionals",
+    "standardAnnualSalary": 36100,
+    "lowerAnnualSalary": 30300
+  },
+  {
+    "occupationCode": "2161",
+    "jobType": "Research and development (r&d) managers",
+    "standardAnnualSalary": 49200,
+    "lowerAnnualSalary": 38400
+  },
+  {
+    "occupationCode": "2162",
+    "jobType": "Other researchers, unspecified discipline",
+    "standardAnnualSalary": 40800,
+    "lowerAnnualSalary": 35000
+  },
+  {
+    "occupationCode": "2240",
+    "jobType": "Veterinarians",
+    "standardAnnualSalary": 48100,
+    "lowerAnnualSalary": 39600
+  },
+  {
+    "occupationCode": "2311",
+    "jobType": "Higher education teaching professionals",
+    "standardAnnualSalary": 47700,
+    "lowerAnnualSalary": 38100
+  },
+  {
+    "occupationCode": "2317",
+    "jobType": "Teachers of English as a foreign language",
+    "standardAnnualSalary": 36600,
+    "lowerAnnualSalary": 27200
+  },
+  {
+    "occupationCode": "2319",
+    "jobType": "Teaching professionals not elsewhere classified",
+    "standardAnnualSalary": 30960,
+    "lowerAnnualSalary": 24500
+  },
+  {
+    "occupationCode": "2322",
+    "jobType": "Education managers",
+    "standardAnnualSalary": 40700,
+    "lowerAnnualSalary": 33200
+  },
+  {
+    "occupationCode": "2323",
+    "jobType": "Education advisers and school inspectors",
+    "standardAnnualSalary": 37500,
+    "lowerAnnualSalary": 30700
+  },
+  {
+    "occupationCode": "2324",
+    "jobType": "Early education and childcare services managers",
+    "standardAnnualSalary": 30960,
+    "lowerAnnualSalary": 23200
+  },
+  {
+    "occupationCode": "2329",
+    "jobType": "Other educational professionals not elsewhere classified",
+    "standardAnnualSalary": 43100,
+    "lowerAnnualSalary": 33600
+  },
+  {
+    "occupationCode": "2411",
+    "jobType": "Barristers and judges",
+    "standardAnnualSalary": 52400,
+    "lowerAnnualSalary": 33900
+  },
+  {
+    "occupationCode": "2412",
+    "jobType": "Solicitors and lawyers",
+    "standardAnnualSalary": 52300,
+    "lowerAnnualSalary": 37700
+  },
+  {
+    "occupationCode": "2419",
+    "jobType": "Legal professionals not elsewhere classified",
+    "standardAnnualSalary": 30960,
+    "lowerAnnualSalary": 23500
+  },
+  {
+    "occupationCode": "2421",
+    "jobType": "Chartered and certified accountants",
+    "standardAnnualSalary": 46800,
+    "lowerAnnualSalary": 33900
+  },
+  {
+    "occupationCode": "2422",
+    "jobType": "Finance and investment analysts and advisers",
+    "standardAnnualSalary": 40600,
+    "lowerAnnualSalary": 32100
+  },
+  {
+    "occupationCode": "2423",
+    "jobType": "Taxation experts",
+    "standardAnnualSalary": 46300,
+    "lowerAnnualSalary": 33900
+  },
+  {
+    "occupationCode": "2431",
+    "jobType": "Management consultants and business analysts",
+    "standardAnnualSalary": 48000,
+    "lowerAnnualSalary": 36200
+  },
+  {
+    "occupationCode": "2432",
+    "jobType": "Marketing and commercial managers",
+    "standardAnnualSalary": 46500,
+    "lowerAnnualSalary": 37000
+  },
+  {
+    "occupationCode": "2433",
+    "jobType": "Actuaries, economists and statisticians",
+    "standardAnnualSalary": 48000,
+    "lowerAnnualSalary": 37300
+  },
+  {
+    "occupationCode": "2434",
+    "jobType": "Business and related research professionals",
+    "standardAnnualSalary": 36500,
+    "lowerAnnualSalary": 30600
+  },
+  {
+    "occupationCode": "2435",
+    "jobType": "Professional/chartered company secretaries",
+    "standardAnnualSalary": 49500,
+    "lowerAnnualSalary": 32800
+  },
+  {
+    "occupationCode": "2439",
+    "jobType": "Business, research and administrative professionals not elsewhere classified",
+    "standardAnnualSalary": 52200,
+    "lowerAnnualSalary": 41000
+  },
+  {
+    "occupationCode": "2440",
+    "jobType": "Business and financial project management professionals",
+    "standardAnnualSalary": 52900,
+    "lowerAnnualSalary": 41100
+  },
+  {
+    "occupationCode": "2451",
+    "jobType": "Architects",
+    "standardAnnualSalary": 45900,
+    "lowerAnnualSalary": 38800
+  },
+  {
+    "occupationCode": "2452",
+    "jobType": "Chartered architectural technologists, planning officers and consultants",
+    "standardAnnualSalary": 36600,
+    "lowerAnnualSalary": 27200
+  },
+  {
+    "occupationCode": "2453",
+    "jobType": "Quantity surveyors",
+    "standardAnnualSalary": 45500,
+    "lowerAnnualSalary": 34000
+  },
+  {
+    "occupationCode": "2454",
+    "jobType": "Chartered surveyors",
+    "standardAnnualSalary": 41600,
+    "lowerAnnualSalary": 34300
+  },
+  {
+    "occupationCode": "2455",
+    "jobType": "Construction project managers and related professionals",
+    "standardAnnualSalary": 40500,
+    "lowerAnnualSalary": 34200
+  },
+  {
+    "occupationCode": "2462",
+    "jobType": "Probation officers",
+    "standardAnnualSalary": 36500,
+    "lowerAnnualSalary": 29900
+  },
+  {
+    "occupationCode": "2464",
+    "jobType": "Youth work professionals",
+    "standardAnnualSalary": 36100,
+    "lowerAnnualSalary": 30200
+  },
+  {
+    "occupationCode": "2469",
+    "jobType": "Welfare professionals not elsewhere classified",
+    "standardAnnualSalary": 33400,
+    "lowerAnnualSalary": 27900
+  },
+  {
+    "occupationCode": "2471",
+    "jobType": "Librarians",
+    "standardAnnualSalary": 31700,
+    "lowerAnnualSalary": 23200
+  },
+  {
+    "occupationCode": "2472",
+    "jobType": "Archivists, conservators and curators",
+    "standardAnnualSalary": 33600,
+    "lowerAnnualSalary": 28600
+  },
+  {
+    "occupationCode": "2481",
+    "jobType": "Quality control and planning engineers",
+    "standardAnnualSalary": 40000,
+    "lowerAnnualSalary": 33100
+  },
+  {
+    "occupationCode": "2482",
+    "jobType": "Quality assurance and regulatory professionals",
+    "standardAnnualSalary": 42500,
+    "lowerAnnualSalary": 35000
+  },
+  {
+    "occupationCode": "2483",
+    "jobType": "Environmental health professionals",
+    "standardAnnualSalary": 38900,
+    "lowerAnnualSalary": 32000
+  },
+  {
+    "occupationCode": "2491",
+    "jobType": "Newspaper, periodical and broadcast editors",
+    "standardAnnualSalary": 40400,
+    "lowerAnnualSalary": 32900
+  },
+  {
+    "occupationCode": "2492",
+    "jobType": "Newspaper and periodical broadcast journalists and reporters",
+    "standardAnnualSalary": 40800,
+    "lowerAnnualSalary": 31800
+  }
+]
