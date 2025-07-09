@@ -11,13 +11,13 @@ const WhyWeBuiltSoftHire = () => {
         Hiring the right person is hard. Hiring the right person from overseas? Even harder.
       </p>
       <p className="mb-6">
-        From sponsor licence applications to immigration compliance, most businesses — especially mid-sized ones — find themselves tangled in red tape. The rules are complex, the processes manual, and the risks of getting it wrong are high. Meanwhile, companies are missing out on top-tier global talent simply because the system isn’t built to support them.
+        From sponsor license applications to immigration compliance, most businesses — especially mid-sized ones — find themselves tangled in red tape. The rules are complex, the processes manual, and the risks of getting it wrong are high. Meanwhile, companies are missing out on top-tier global talent simply because the system isn’t built to support them.
       </p>
       <p className="mb-6">
         That’s why we created <strong>SoftHire</strong> — a smarter, AI-enabled recruitment platform built to simplify international hiring from end to end.
       </p>
       <p className="mb-6">
-        Whether you're applying for a UK sponsor licence, staying compliant with sponsor duties, or searching for pre-vetted international candidates, SoftHire brings everything under one powerful, intuitive system.
+        Whether you're applying for a UK sponsor license, staying compliant with sponsor duties, or searching for pre-vetted international candidates, SoftHire brings everything under one powerful, intuitive system.
       </p>
 
       <section className="mb-8">
@@ -38,7 +38,7 @@ const WhyWeBuiltSoftHire = () => {
           <li>“We found great international candidates, but we don’t know how to hire them legally.”</li>
         </ul>
         <p className="mt-4">
-          Recruitment platforms weren’t equipped to help with sponsorship. Immigration lawyers were essential but costly. And sponsor licence holders are lacking the tools to manage their obligations confidently.
+          Recruitment platforms weren’t equipped to help with sponsorship. Immigration lawyers were essential but costly. And sponsor license holders are lacking the tools to manage their obligations confidently.
         </p>
         <p>
           We saw a clear need: a single platform that makes it easy, affordable, and legally compliant to tap into global talent.
@@ -49,7 +49,7 @@ const WhyWeBuiltSoftHire = () => {
         <h2 className="text-2xl font-semibold mb-3">🛠️ The SoftHire Solution: What We Do</h2>
         <p className="mb-4">Our platform enables companies to:</p>
         <ul className="list-disc pl-6 space-y-2">
-          <li>✅ Obtain a UK sponsor licence through a guided, automated process</li>
+          <li>✅ Obtain a UK sponsor license through a guided, automated process</li>
           <li>✅ Comply with ongoing sponsorship duties using alerts, checklists, and smart record-keeping tools</li>
           <li>✅ Recruit qualified, verified international talent, matched based on eligibility, skill set, and availability</li>
         </ul>

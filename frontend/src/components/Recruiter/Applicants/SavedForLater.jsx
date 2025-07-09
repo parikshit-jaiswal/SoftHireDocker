@@ -105,7 +105,7 @@ function SavedForLater() {
     return (
         <>
             <div className="space-y-5">
-                {applicants.length > 0 ? (
+                {Array.isArray(applicants) && applicants.length > 0 ? (
                     applicants.map((applicant) => (
                         <ApplicantCard key={applicant._id} applicant={applicant} />
                     ))

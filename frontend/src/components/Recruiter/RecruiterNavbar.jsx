@@ -17,7 +17,8 @@ function RecruiterNavbar() {
         { id: 2, name: "Jobs", link: "/recruiter/jobs" },
         { id: 3, name: "Applicants", link: "/recruiter/applicants" },
         { id: 4, name: "Discover", link: "/recruiter/discover" },
-        { id: 5, name: "Messages", link: "/recruiter/messages" }
+        { id: 5, name: "Messages", link: "/recruiter/messages" },
+        { id: 6, name: "Sponsorship License Application", link: "/sponsorship-license-application" }
     ];
 
     useEffect(() => {
@@ -32,13 +33,15 @@ function RecruiterNavbar() {
             setSelectedOption('Messages');
         } else if (currentPath === '/recruiter') {
             setSelectedOption('Home');
+        } else if (currentPath.includes('/sponsorship-license-application')) {
+            setSelectedOption('Sponsorship License Application');
         } else {
             setSelectedOption('');
         }
         setIsMobileMenuOpen(false);
     }, [location.pathname]);
 
-    // Dummy logout function
+   
     const handleLogout = async () => {
         setLogoutLoading(true);
         try {
@@ -46,7 +49,7 @@ function RecruiterNavbar() {
             if (response.status === 200) {
                 localStorage.removeItem('token');
                 localStorage.removeItem('persist:root');
-                window.location.href = '/'; // Redirect to home page
+                window.location.href = '/'; 
                 toast.success('Logged out successfully!');
             } else {
                 toast.error('Logout failed. Please try again.');
@@ -86,7 +89,7 @@ function RecruiterNavbar() {
                 </div>
 
                 <div className="flex items-center gap-3 md:gap-5">
-                    <div className="cursor-pointer"><Bell size={22} /></div>
+                    {/* <div className="cursor-pointer"><Bell size={22} /></div> */}
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <div className="flex items-center gap-1 cursor-pointer">

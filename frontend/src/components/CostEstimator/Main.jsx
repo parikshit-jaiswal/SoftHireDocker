@@ -19,14 +19,14 @@ function Main() {
 
     const data = [
         {
-            title: 'Sponsor Licence Fees & Ongoing Costs',
+            title: 'Sponsor License Fees & Ongoing Costs',
             description:
                 <>
                     <div className='text-[1rem] md:w-[90%]'>
-                        <p >When hiring international talent in the UK, it's important to understand the full financial picture. The Sponsor Licence comes with a set of mandatory fees—both at the application stage and throughout its validity. Here's what you need to know:</p>
+                        <p >When hiring international talent in the UK, it's important to understand the full financial picture. The Sponsor License comes with a set of mandatory fees—both at the application stage and throughout its validity. Here's what you need to know:</p>
                         <div className=" mt-3 space-y-3">
-                            <p className='font-bold'>&#x2022; Sponsor Licence Application Fee</p>
-                            <p>This is a one-time fee paid when applying for a Sponsor Licence.</p>
+                            <p className='font-bold'>&#x2022; Sponsor License Application Fee</p>
+                            <p>This is a one-time fee paid when applying for a Sponsor License.</p>
                             <div className="">
                                 <p>Small or charitable sponsors: <b>£536</b></p>
                                 <p>Medium or large sponsors: <b> £1,476</b></p>
@@ -50,8 +50,8 @@ function Main() {
                                 6 months after.</p>
                         </div>
                         <div className=" mt-3 space-y-3">
-                            <p className='font-bold'>&#x2022; Licence Renewal Fee (Every 4 years)</p>
-                            <p>Sponsor Licences are valid for 4 years and must be renewed.</p>
+                            <p className='font-bold'>&#x2022; License Renewal Fee (Every 4 years)</p>
+                            <p>Sponsor Licenses are valid for 4 years and must be renewed.</p>
                             <p>Renewal costs are the same as the initial application, depending on
                                 company size.</p>
                         </div>

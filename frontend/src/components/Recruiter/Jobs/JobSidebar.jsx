@@ -75,7 +75,7 @@ const JobSidebar = () => {
                     {/* Search and Filters */}
                     <div className="p-4 space-y-4">
                         {/* Search Bar */}
-                        <div className="relative">
+                        {/* <div className="relative">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                             <input
                                 type="text"
@@ -84,7 +84,7 @@ const JobSidebar = () => {
                                 onChange={(e) => setSearchValue(e.target.value)}
                                 className="w-full pl-10 pr-4 py-3 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
-                        </div>
+                        </div> */}
 
                         {/* Filter Buttons */}
                         <div className="flex space-x-2 w-full">

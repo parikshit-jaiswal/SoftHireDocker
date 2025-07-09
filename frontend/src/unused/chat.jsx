@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import socket from '@/sockets/socket';
 
-const socket = io(import.meta.env.VITE_SERVER_URL, { withCredentials: true }); // or your backend URL
 
 function Chat({ userId, receiverId }) {
     const [message, setMessage] = useState("");

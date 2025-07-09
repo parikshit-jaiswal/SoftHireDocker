@@ -5,6 +5,7 @@ import jobSlice from "./jobSlice"
 import applicantSlice from "./applicantSlice"
 import UserJobSlice from "./UserJobSlice"
 import chatSlice from "./chatSlice";
+import sponcershipApplicationSlice from "./sponcershipApplicationSlice";
 
 import {
     persistReducer,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     userJobs: UserJobSlice,
     applicant: applicantSlice,
     chat: chatSlice,
+    sponcershipApplication: sponcershipApplicationSlice,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

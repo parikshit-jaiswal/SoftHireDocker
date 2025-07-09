@@ -42,14 +42,14 @@ const BlogPosts = () => {
               className="w-full h-60 object-cover rounded-lg mb-4"
             />
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold">
-              What Is a UK Sponsorship Licence?
+              What Is a UK Sponsorship License?
             </h2>
             <p className="text-gray-600 mt-2">
               Discover emerging trends in global software recruitment, visa
               regulations, and remote hiring strategies.
             </p>
             <a
-              href="/uk-licence-blog"
+              href="/uk-license-blog"
               className="text-red-500 mt-4 hover:underline w-fit flex items-center"
             >
               Read More{" "}
@@ -96,7 +96,7 @@ const BlogPosts = () => {
             </h2>
             <p className="text-gray-600 mt-2">
               A comprehensive guide for UK businesses looking to hire global
-              talent legally and efficiently through the sponsor licence route.
+              talent legally and efficiently through the sponsor license route.
             </p>
             <a
               href="#"

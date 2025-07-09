@@ -11,10 +11,10 @@ import Otp from "./pages/Otp.jsx";
 import Reset from "./pages/Reset.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import LicenceAssessment from "./pages/LicenceAssessment.jsx";
+import LicenseAssessment from "./pages/LicenseAssessment.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
-import LicenceAssessmentPage from "./pages/LicenceAssessmentPage.jsx";
+import LicenseAssessmentPage from "./pages/LicenseAssessmentPage.jsx";
 import SalaryCalculator from "./pages/SalaryCalculator.jsx";
 import ImigrationSkillChargeCalculator from "./pages/ImigrationSkillChargeCalculatorPage.jsx";
 import AssessmentResult from "./pages/AssessmentResult.jsx";
@@ -69,6 +69,12 @@ import SystemAccess from "./components/Recruiter/Sponsorship/StepsForm/SystemAcc
 import SupportingDoc from "./components/Recruiter/Sponsorship/StepsForm/SupportingDoc.jsx";
 import OrganisationSize from "./components/Recruiter/Sponsorship/StepsForm/OrganisationSize.jsx";
 import Declaration from "./components/Recruiter/Sponsorship/StepsForm/Declaration.jsx";
+import RecruiterSponcerLicenseLayout from "./pages/Recruiter/RecruiterSponcerLicenseLayout.jsx";
+import Sponsorship from "./pages/Dashboard/Service.jsx";
+import Service from "./pages/Dashboard/Service.jsx";
+import AboutSponcerCompliance from "./pages/AboutSponcerCompliance.jsx";
+import PaymentSuccessPage from "./pages/payment/PaymentSuccessPage.jsx";
+import PaymentFailedPage from "./pages/payment/PaymentFailedPage.jsx";
 
 function App() {
   return (
@@ -83,23 +89,6 @@ function App() {
             />
 
             <Routes>
-
-
-
-              <Route path="/sponsorship-license-application/getting-started" element={<GettingStartedForm />} />
-              <Route path="/sponsorship-license-application/about-your-company" element={<AboutYourCompany />} />
-              <Route path="/sponsorship-license-application/company-structure" element={<CompanyStructure />} />
-              <Route path="/sponsorship-license-application/activity-needs" element={<ActivityNeeds />} />
-              <Route path="/sponsorship-license-application/about-you" element={<AboutYou />} />
-              <Route path="/sponsorship-license-application/system-access" element={<SystemAccess />} />
-              <Route path="/sponsorship-license-application/supporting-documents" element={<SupportingDoc />} />
-              <Route path="/sponsorship-license-application/organisation-size" element={<OrganisationSize />} />
-              <Route path="/sponsorship-license-application/declaration" element={<Declaration />} />
-
-
-              <Route path="/sl" element={<SponsorshipLicenseApplicationPage />} />
-
-
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<CandidateSignUpPage />} />
               <Route path="/recruiter/signup" element={<RecruiterSignUpPage />} />
@@ -109,18 +98,19 @@ function App() {
               <Route path="/blogs" element={<Resources1 />} />
               <Route path="/tools" element={<Resources2 />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/about-sponsorship-compliance" element={<AboutSponcerCompliance />} />
               <Route path="/demo" element={<Demo />} />
               <Route path="/about" element={<About />} />
               <Route path="/forgot" element={<Forgot />} />
               <Route path="/otp" element={<Otp />} />
               <Route path="/reset" element={<Reset />} />
               <Route path="/reset-otp-verify" element={<ResetOTP />} />
-              <Route path="/assessment" element={<LicenceAssessment />} />
+              <Route path="/assessment" element={<LicenseAssessment />} />
               <Route path="/assessment/result" element={<AssessmentResult />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route
-                path="/sponsor-licence-assessment"
-                element={<LicenceAssessmentPage />}
+                path="/sponsor-license-assessment"
+                element={<LicenseAssessmentPage />}
               />
               <Route
                 path="/salary-calculator"
@@ -143,7 +133,7 @@ function App() {
                 path="/immigration-skill-charge-calculator/calculate"
                 element={<ImmigrationCalculator />}
               />
-              <Route path="/uk-licence-blog" element={<UKBlogPage />} />
+              <Route path="/uk-license-blog" element={<UKBlogPage />} />
               <Route
                 path="/why-softhire-blog"
                 element={<WhyWeBuiltSoftHire />}
@@ -156,11 +146,14 @@ function App() {
                   <Route path="/dashboard/messages" element={<Messages />} />
                   <Route path="/dashboard/applied" element={<Applied />} />
                   <Route path="/dashboard/home" element={<Dashboard />} />
+                  <Route path="/dashboard/service" element={<Service />} />
                   <Route
                     path="/dashboard/job-details/:jobId"
                     element={<JobDetailsPage />}
                   />
                 </Route>
+                <Route path="/candidate/payment/:applicationId/success" element={<PaymentSuccessPage />} />
+                <Route path="/candidate/payment/:applicationId/failed" element={<PaymentFailedPage />} />
               </Route>
               <Route element={<RecruiterProtectedRoute />}>
                 <Route path="/recruiter" element={<RecruiterDashboardLayout />}>
@@ -183,6 +176,22 @@ function App() {
                   <Route path="/recruiter/messages" element={<RecruiterChatPage />} />
                   <Route path="/recruiter/chat" element={<RecruiterChatPage />} />
                 </Route>
+
+                <Route path="/sponsorship-license-application" element={<RecruiterSponcerLicenseLayout />} >
+                  <Route path="/sponsorship-license-application" element={<SponsorshipLicenseApplicationPage />} />
+                  <Route path="/sponsorship-license-application/getting-started" element={<GettingStartedForm />} />
+                  <Route path="/sponsorship-license-application/about-your-company" element={<AboutYourCompany />} />
+                  <Route path="/sponsorship-license-application/company-structure" element={<CompanyStructure />} />
+                  <Route path="/sponsorship-license-application/activity-needs" element={<ActivityNeeds />} />
+                  <Route path="/sponsorship-license-application/about-you" element={<AboutYou />} />
+                  <Route path="/sponsorship-license-application/system-access" element={<SystemAccess />} />
+                  <Route path="/sponsorship-license-application/supporting-documents" element={<SupportingDoc />} />
+                  <Route path="/sponsorship-license-application/organisation-size" element={<OrganisationSize />} />
+                  <Route path="/sponsorship-license-application/declaration" element={<Declaration />} />
+                </Route>
+
+                <Route path="payment/:applicationId/success" element={<PaymentSuccessPage />} />
+                <Route path="payment/:applicationId/failed" element={<PaymentFailedPage />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

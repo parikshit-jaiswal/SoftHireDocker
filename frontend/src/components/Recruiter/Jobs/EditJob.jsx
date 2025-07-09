@@ -403,37 +403,6 @@ function EditJob({ activeTab, setActiveTab }) {
         }
     };
 
-    // setTitle('');
-    // setCompanyName('');
-    // setCompanySize('');
-    // setJobDescription('');
-    // setJobType('');
-    // setPrimaryRole('');
-    // setAdditionalRoles([]);
-    // setWorkExperience('');
-    // setSkills([]);
-    // setLocation([]);
-    // setRelocationRequired(false);
-    // setRelocationAssistance(false);
-    // setRemotePolicy('');
-    // setRemoteCulture('');
-    // setHiresIn([]);
-    // setAcceptWorldwide(false);
-    // setCollaborationHours({ start: '', end: '', timeZone: '' });
-    // setSalary({ min: '', max: '' });
-    // setCurrency('');
-    // setEquity({ min: '', max: '' });
-    // setVisaSponsorship(false);
-    // setAutoSkipVisaCandidates(false);
-    // setAutoSkipRelocationCandidates(false);
-    // setContactPerson({ name: '', position: '', location: '', experience: '' });
-    // setIsDraft(false);
-    // setValue('');
-    // setErrors({});
-    // setSuccessMessage('');
-    // };
-
-    // Section title component for both mobile and desktop
     const SectionTitle = ({ number, title }) => (
         <div className="mb-4 md:mb-0">
             <p className="font-bold text-xl">
@@ -523,6 +492,14 @@ function EditJob({ activeTab, setActiveTab }) {
                     </nav>
                 </div>
             </div >
+        );
+    }
+
+    if (!selectedJob || !selectedJob._id) {
+        return (
+            <div className="flex justify-center items-center h-full">
+                <p className="text-gray-500">No job selected. Please select a job to edit.</p>
+            </div>
         );
     }
 

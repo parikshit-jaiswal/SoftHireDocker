@@ -34,10 +34,10 @@ function BlogSection() {
     const Blogdata = [
         {
             img: "/hero/blogImg1.png",
-            data: "What Is a UK Sponsorship Licence?",
+            data: "What Is a UK Sponsorship License?",
             date: "March 10,2024",
             time: "8 min read",
-            href: "/uk-licence-blog"
+            href: "/uk-license-blog"
         },
         {
             img: "/hero/blogImg2.png",

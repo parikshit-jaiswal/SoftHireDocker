@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Search, Plus, Check, AlertCircle } from "lucide-react";
 import { jobRoles } from "@/constants/dashboard";
-import API from "@/Api/api"; // Assuming you have this API service configured
+// import userService from "@/api/userService"; // Fixed path
+import profileService from "@/Api/profileService"; // Add profileService
 import { profileImageUpload } from "@/Api/profile";
 
 function EditProfile() {
@@ -58,8 +59,91 @@ function EditProfile() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [profileUrl, setProfileUrl] = useState("/api/placeholder/56/56");
+  const [isLoading, setIsLoading] = useState(false);
 
   const fileInputRef = useRef(null);
+
+  // Load existing profile data on component mount
+  useEffect(() => {
+    loadProfileData();
+  }, []);
+
+  const loadProfileData = async () => {
+    setIsLoading(true);
+    try {
+      // Use profileService to get current user profile
+      const result = await profileService.getCurrentUserProfile();
+      
+      if (result.success && result.data) {
+        const profile = result.data;
+        
+        // Populate form with existing data
+        setFormData({
+          name: profile.name || profile.user?.fullName || "",
+          location: profile.location || "",
+          primaryRole: profile.primaryRole || "",
+          yearsOfExperience: profile.yearsOfExperience || "",
+          openToRoles: profile.openToRoles || [],
+          bio: profile.bio || "",
+          socialProfiles: {
+            website: profile.socialProfiles?.website || "",
+            linkedIn: profile.socialProfiles?.linkedIn || "",
+            github: profile.socialProfiles?.github || "",
+            twitter: profile.socialProfiles?.twitter || "",
+          },
+          workExperience: profile.workExperience?.length > 0 ? profile.workExperience : [
+            {
+              company: "",
+              title: "",
+              startDate: "",
+              endDate: "",
+              current: false,
+              description: "",
+            },
+          ],
+          education: {
+            college: profile.education?.college || "",
+            graduationYear: profile.education?.graduationYear || "",
+            degree: profile.education?.degree || "",
+            major: profile.education?.major || "",
+            gpa: profile.education?.gpa || "",
+          },
+          skills: profile.skills || [],
+          achievements: profile.achievements || "",
+          identity: {
+            pronouns: profile.identity?.pronouns || "",
+            genderIdentity: profile.identity?.genderIdentity || "",
+            raceEthnicity: profile.identity?.raceEthnicity || [],
+            displayPronouns: profile.identity?.displayPronouns || false,
+          },
+        });
+        
+        // Set profile image
+        if (profile.profileImage) {
+          setProfileUrl(profile.profileImage);
+        } else if (profile.user?.avatar) {
+          setProfileUrl(profile.user.avatar);
+        }
+
+        // Set UI state based on loaded data
+        if (profile.workExperience?.[0]?.current) {
+          setCurrentlyWorking(true);
+        }
+        
+        if (profile.identity?.displayPronouns) {
+          setDisplayPronouns(true);
+        }
+        
+        if (profile.identity?.raceEthnicity) {
+          setRaceEthnicity(profile.identity.raceEthnicity);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load profile:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -254,7 +338,6 @@ const handleProfileImage = async () => {
       // Prepare form data for API submission
       const profileData = {
         name: formData.name,
-        profilePhoto: formData.profilePhoto,
         location: formData.location,
         primaryRole: formData.primaryRole,
         yearsOfExperience: formData.yearsOfExperience,
@@ -268,30 +351,28 @@ const handleProfileImage = async () => {
         identity: formData.identity,
       };
 
-      // Call the API
-      const response = await API.post("/profile", profileData);
+      // Use profileService to update
+      const result = await profileService.updateCurrentUserProfile(profileData);
 
-      // Handle success
-      setFormStatus({
-        submitted: true,
-        error: false,
-        message: "Profile successfully created!",
-      });
+      if (result.success) {
+        setFormStatus({
+          submitted: true,
+          error: false,
+          message: result.message || "Profile successfully updated!",
+        });
+      } else {
+        throw new Error(result.message || "Failed to update profile");
+      }
 
       // Scroll to top to show message
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
-      console.error(
-        "Edit Profile Error:",
-        error.response?.data || error.message
-      );
+      console.error("Edit Profile Error:", error);
 
       setFormStatus({
         submitted: false,
         error: true,
-        message:
-          error.response?.data?.message ||
-          "Failed to create profile. Please try again.",
+        message: error.message || "Failed to update profile. Please try again.",
       });
 
       // Scroll to top to show error

@@ -1,6 +1,5 @@
 import API from "./api";
 
-// Candidate Signup
 export const signup = async (userData) => {
   try {
     const response = await API.post("/auth/signup", userData);
@@ -64,9 +63,7 @@ export const resetPassword = async (email, newPassword) => {
   }
 };
 
-// // organizationName: "",
-//         website: "",
-//         industry: "",
+
 export const SubmitRecruiterInfo = async (recruiter) => {
   try {
     const response = await API.post("/auth/submit-recruiter-details", recruiter);

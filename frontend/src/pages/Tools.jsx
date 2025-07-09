@@ -9,7 +9,7 @@ function Resources2() {
         <>
             <Navbar />
             <Hero />
-            <Main />
+            <div className="mb-16"><Main /></div>
             <Footer />
         </>
     )

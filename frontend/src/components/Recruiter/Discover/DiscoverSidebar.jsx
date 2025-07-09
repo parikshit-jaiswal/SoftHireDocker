@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search, Plus, Menu, X } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { setMessages, setReceiver } from '@/redux/chatSlice';
+import { skillOptions } from '@/constants/postJobOptions';
+import { locations } from '@/constants/locations';
+import { ro } from 'date-fns/locale';
 
-const DiscoverSidebar = () => {
+const DiscoverSidebar = ({ discoverApplicants }) => {
 
   const [searchValue, setSearchValue] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
 
   // Filter state
-  const [roleFilter, setRoleFilter] = useState(['Full-Stack']);
-  const [locationFilter, setLocationFilter] = useState(['United Kingdom']);
+  const [roleFilter, setRoleFilter] = useState([]);
+  const [locationFilter, setLocationFilter] = useState([]);
   const [experienceFilter, setExperienceFilter] = useState([]);
   const [skillFilter, setSkillFilter] = useState([]);
   const [educationFilter, setEducationFilter] = useState([]);
@@ -56,12 +59,177 @@ const DiscoverSidebar = () => {
   const [educationSearch, setEducationSearch] = useState('');
 
   // Example dropdown options
-  const roleOptions = ['Full-Stack', 'Frontend', 'Backend', 'DevOps'];
-  const locationOptions = ['United Kingdom', 'India', 'USA', 'Remote'];
-  const experienceOptions = ['0-1 years', '1-3 years', '3+ years'];
-  const skillOptions = ['React', 'Node.js', 'Python', 'AWS'];
-  const educationOptions = ['B.Tech', 'M.Tech', 'B.Sc', 'MBA'];
+  const roleOptions = [
+    "Full Stack Developer",
+    "Frontend Developer",
+    "Backend Developer",
+    "Data Analyst",
+    "Data Scientist",
+    "Machine Learning Engineer",
+    "DevOps Engineer",
+    "Cloud Engineer",
+    "Software Engineer",
+    "Mobile App Developer",
+    "Android Developer",
+    "iOS Developer",
+    "UI/UX Designer",
+    "Web Developer",
+    "QA Engineer",
+    "Automation Tester",
+    "Game Developer",
+    "Cybersecurity Analyst",
+    "Information Security Specialist",
+    "Network Engineer",
+    "IT Support Specialist",
+    "Database Administrator",
+    "System Administrator",
+    "Site Reliability Engineer",
+    "AI Engineer",
+    "Blockchain Developer",
+    "Embedded Systems Engineer",
+    "IoT Developer",
+    "AR/VR Developer",
+    "Robotics Engineer",
+    "Technical Writer",
+    "Product Manager",
+    "Project Manager",
+    "Business Analyst",
+    "Scrum Master",
+    "Software Architect",
+    "Solutions Architect",
+    "Salesforce Developer",
+    "CRM Consultant",
+    "ERP Consultant",
+    "Tech Support Engineer",
+    "Help Desk Technician",
+    "IT Consultant",
+    "SEO Specialist",
+    "Digital Marketing Analyst",
+    "Content Strategist",
+    "Social Media Manager",
+    "Graphic Designer",
+    "Video Editor",
+    "3D Animator",
+    "Photographer",
+    "Penetration Tester",
+    "Ethical Hacker",
+    "Game Designer",
+    "Game Tester",
+    "VR Designer",
+    "AI Researcher",
+    "Computer Vision Engineer",
+    "NLP Engineer",
+    "Big Data Engineer",
+    "Hadoop Developer",
+    "SAP Consultant",
+    "Oracle Developer",
+    "Python Developer",
+    "Java Developer",
+    "Technical Program Manager",
+    "Innovation Manager",
+    "Firmware Engineer",
+    "VLSI Design Engineer",
+    "FPGA Engineer",
+    "Technical Account Manager",
+    "Cloud Security Engineer",
+    "Mobile Security Analyst",
+    "IT Risk Analyst",
+    "Infrastructure Engineer",
+    "Network Security Engineer",
+    "IT Governance Analyst",
+    "Information Systems Manager",
+    "Platform Engineer",
+    "AI Ethics Researcher",
+    "Data Engineer",
+    "Data Architect",
+    "Solutions Engineer",
+    "Security Consultant",
+    "Security Engineer",
+    "Quantitative Analyst",
+    "Financial Data Analyst",
+    "Digital Forensics Analyst",
+    "IT Project Coordinator",
+    "Health Informatics Specialist",
+    "EdTech Developer",
+    "Agile Coach",
+    "Scrum Product Owner",
+    "Tech Evangelist",
+    "Cloud Migration Engineer",
+    "Business Intelligence Developer",
+    "IT Compliance Analyst",
+    "Database Architect",
+    "IT Trainer",
+    "Research Software Engineer",
+    "IT Asset Manager",
+    "Application Support Engineer",
+    "Security Operations Center Analyst (SOC Analyst)",
+    "Logistics Software Engineer",
+    "Legal Tech Consultant",
+    "InsurTech Developer",
+    "FinTech Product Manager",
+    "SaaS Engineer",
+    "CRM Specialist",
+    "Data Compliance Officer",
+    "Knowledge Management Specialist",
+    "Telecom Engineer",
+    "E-commerce Tech Lead",
+    "Streaming Platform Engineer",
+    "DevRel Engineer",
+    "JavaScript Developer",
+    "TypeScript Developer",
+    "C++ Developer",
+    "C# Developer",
+    "Go Developer",
+    "Rust Developer",
+    "PHP Developer",
+    "Ruby on Rails Developer",
+    "Perl Developer",
+    "Scala Developer",
+    "Technical Recruiter",
+    "Cloud Consultant",
+    "Azure Engineer",
+    "AWS Engineer",
+    "GCP Engineer",
+    "Kubernetes Specialist",
+    "Docker Expert",
+    "CI/CD Engineer",
+    "NoSQL Developer",
+    "MongoDB Specialist",
+    "PostgreSQL Developer",
+    "MySQL Developer",
+    "Linux Administrator",
+    "Windows Server Engineer",
+    "IT Auditor",
+    "CTO",
+    "Software Tester",
+    "Tech Support Specialist",
+    "Computer Programmer",
+    "Hardware Engineer",
+    "Biomedical Engineer",
+    "Research Scientist",
+    "Mathematician",
+    "Statistician",
+    "Simulation Engineer"
+  ];
+  const locationOptions = locations;
 
+  const experienceOptions = [
+    "0-1 year",
+    "1-2 years",
+    "2-3 years",
+    "3-5 years",
+    "5-10 years",
+    "10+ years"
+  ];
+  const educationOptions = [
+    "B.Tech",
+    "B.Sc",
+    "B.A",
+    "M.Tech",
+    "M.Sc",
+    "MBA",
+    "Ph.D"
+  ];
   // Helper to close all dropdowns except the one being opened, and toggle if already open
   const toggleDropdown = (dropdown, setDropdown) => {
     if (dropdown) {
@@ -80,42 +248,18 @@ const DiscoverSidebar = () => {
     }
   };
 
-  // Toggle handlers for dropdowns
-  const handleRoleDropdown = () => {
-    if (roleDropdown) {
-      setRoleDropdown(false);
-    } else {
-      toggleDropdown(roleDropdown, setRoleDropdown);
-    }
-  };
-  const handleLocationDropdown = () => {
-    if (locationDropdown) {
-      setLocationDropdown(false);
-    } else {
-      toggleDropdown(locationDropdown, setLocationDropdown);
-    }
-  };
-  const handleExperienceDropdown = () => {
-    if (experienceDropdown) {
-      setExperienceDropdown(false);
-    } else {
-      toggleDropdown(experienceDropdown, setExperienceDropdown);
-    }
-  };
-  const handleSkillDropdown = () => {
-    if (skillDropdown) {
-      setSkillDropdown(false);
-    } else {
-      toggleDropdown(skillDropdown, setSkillDropdown);
-    }
-  };
-  const handleEducationDropdown = () => {
-    if (educationDropdown) {
-      setEducationDropdown(false);
-    } else {
-      toggleDropdown(educationDropdown, setEducationDropdown);
-    }
-  };
+  useEffect(() => {
+    console.log('Filters changed:', {
+      roleFilter,
+      locationFilter,
+      experienceFilter,
+      skillFilter,
+      educationFilter
+    });
+
+    discoverApplicants({ role: roleFilter, location: locationFilter, experience: experienceFilter, skills: skillFilter, education: educationFilter })
+
+  }, [roleFilter, locationFilter, experienceFilter, skillFilter, educationFilter]);
 
   return (
     <div className="relative flex h-screen pb-16">
@@ -139,7 +283,7 @@ const DiscoverSidebar = () => {
           {/* Search and Filters */}
           <div className="p-4 space-y-4">
             {/* Search Bar */}
-            <div className="relative">
+            {/* <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 type="text"
@@ -148,7 +292,8 @@ const DiscoverSidebar = () => {
                 onChange={(e) => setSearchValue(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-            </div>
+            </div> */}
+
             {/* Filters */}
             <div className="space-y-6 mt-6">
               {/* Role Filter */}
@@ -166,7 +311,7 @@ const DiscoverSidebar = () => {
                   ))}
                 </div>
                 {roleDropdown && (
-                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64">
+                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64 max-h-48 overflow-y-auto">
                     <input
                       type="text"
                       placeholder="Search roles"
@@ -214,7 +359,7 @@ const DiscoverSidebar = () => {
                   ))}
                 </div>
                 {locationDropdown && (
-                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64">
+                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64 max-h-48 overflow-y-auto">
                     <input
                       type="text"
                       placeholder="Search locations"
@@ -262,7 +407,7 @@ const DiscoverSidebar = () => {
                   ))}
                 </div>
                 {experienceDropdown && (
-                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64">
+                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64 max-h-48 overflow-y-auto">
                     <input
                       type="text"
                       placeholder="Search experience"
@@ -310,7 +455,7 @@ const DiscoverSidebar = () => {
                   ))}
                 </div>
                 {skillDropdown && (
-                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64">
+                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64 max-h-48 overflow-y-auto">
                     <input
                       type="text"
                       placeholder="Search skills"
@@ -358,7 +503,7 @@ const DiscoverSidebar = () => {
                   ))}
                 </div>
                 {educationDropdown && (
-                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64">
+                  <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow p-2 z-10 absolute w-64 max-h-48 overflow-y-auto">
                     <input
                       type="text"
                       placeholder="Search education"

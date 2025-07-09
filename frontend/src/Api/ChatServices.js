@@ -38,4 +38,16 @@ export const getChatsWithUser = async (receiverId) => {
     }
 };
 
+export const toggleConversationStatus = async (conversationId) => {
+    try {
+        const response = await API.post(`/chat/${conversationId}/toggle-status`, {
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Toggle Conversation Status Error:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
 

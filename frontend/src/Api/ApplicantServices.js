@@ -47,7 +47,6 @@ export const searchApplicants = async (filters, page = 1, limit = 10) => {
             params: { ...filters, page, limit },
             withCredentials: true
         });
-        // console.log("Search Applicants Response:", response.data);
         return response.data;
     } catch (error) {
         console.error("Search Applicants Error:", error.response?.data || error.message);

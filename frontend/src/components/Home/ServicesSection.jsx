@@ -1,8 +1,18 @@
 import React, { act, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Button } from '../ui/button';
+import { toast } from 'react-toastify';
 
-function Card({ variant, title, content, img }) {
+function Card({ variant, title, content, img, link }) {
+
+    const handleNavigate = () => {
+        if (link) {
+            window.location.href = link;
+        } else {
+            toast.info("Coming Soon!");
+        }
+    }
+
     if (variant === "lg") {
         return (
             <div className="flex flex-col items-center px-4 mb-[6rem]">
@@ -23,7 +33,7 @@ function Card({ variant, title, content, img }) {
                             {content}
                         </p>
                         <div className=" w-8">
-                            <Button variant="hero1">Register Now</Button>
+                            <Button onClick={handleNavigate} variant="hero1">Register Now</Button>
                         </div>
                     </div>
                 </div>
@@ -49,7 +59,7 @@ function Card({ variant, title, content, img }) {
                             {content}
                         </p>
                         <div className=" w-8">
-                            <Button variant="hero1">Learn More</Button>
+                            <Button onClick={handleNavigate} variant="hero1">Learn More</Button>
                         </div>
                     </div>
                 </div>
@@ -73,16 +83,19 @@ function ServicesSection() {
     const forOrganisations = [
         {
             title: "Sponsor License",
+            link: "/sponsor-license-assessment",
             img: "/hero/licensed.png",
             content: "Easily obtain and manage your Sponsor License to hire international talent. Our platform simplifies compliance, documentation, and application tracking, ensuring a seamless process for your organization."
         },
         {
             title: "Compliance",
             img: "/hero/compliance.png",
+            link: "/about-sponsorship-compliance",
             content: "With changing policies and regulations, staying compliant is crucial. SoftHire provides automated compliance tracking and guidance to help your organization meet all legal obligations related to international recruitment."
         },
         {
             title: "Recruitment",
+            link: "/recruiter",
             img: "/hero/recruitment.png",
             content: "SoftHire empowers your recruitment team to find and hire international candidates efficiently. With integrated applicant tracking, smart filters, and team collaboration tools, you can streamline your hiring funnel."
         }
@@ -90,6 +103,7 @@ function ServicesSection() {
 
     const forIndividuals = [{
         title: "Job Seekers",
+        link: "/dashboard",
         img: "/hero/jobSearch.png",
         content: "Looking for job opportunities abroad? SoftHire connects ambitious professionals with top global employers. Our platform helps you discover roles that match your skills, supports you through the application process, and prepares you for success in international job markets.",
     },
@@ -139,13 +153,13 @@ function ServicesSection() {
             {/* Content Card */}
             <div className="flex flex-col flex-wrap gap-5 md:gap-7 md:flex-row justify-center items-center">
                 {activeTab == "For Organizations" && forOrganisations.map((item, index) => (
-                    <Card key={index} variant="sm" title={item.title} content={item.content} img={item.img} />
+                    <Card key={index} variant="sm" title={item.title} content={item.content} img={item.img} link={item.link} />
                 ))}
                 {activeTab == "For Individuals" && forIndividuals.map((item, index) => (
-                    <Card key={index} variant="sm" title={item.title} content={item.content} img={item.img} />
+                    <Card key={index} variant="sm" title={item.title} content={item.content} img={item.img} link={item.link} />
                 ))}
                 {activeTab == "For Universities" && forUniversities.map((item, index) => (
-                    <Card key={index} variant="lg" title={item.title} content={item.content} img={item.img} />
+                    <Card key={index} variant="lg" title={item.title} content={item.content} img={item.img} link={item.link} />
                 ))}
             </div>
         </div >

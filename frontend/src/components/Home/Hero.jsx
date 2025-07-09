@@ -65,8 +65,8 @@ function Hero() {
                     <div className="text-center text-[14px] font-semibold opacity-60 mb-10">Become a Skilled Worker Visa Sponsor – Comply with your sponsorship obligations-  Gain access to international talent</div>
                 </div>
                 <div className=" flex  flex-col md:flex-row gap-4 min-w-20 flex-wrap text-center justify-center">
-                    <Link to="/e"><Button variant="hero1" size="hero">Get Started</Button></Link>
-                    <Link to="/login"><Button variant="hero2" size="hero">Explore Jobs</Button></Link>
+                    <Link to="/login"><Button variant="hero1" size="hero">Get Started</Button></Link>
+                    <Link to="/dashboard"><Button variant="hero2" size="hero">Explore Jobs</Button></Link>
                 </div>
             </div>
             <div className="flex-col space-y-[8rem]  hidden md:flex z-0">
