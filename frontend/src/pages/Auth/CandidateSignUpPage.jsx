@@ -145,7 +145,7 @@ const CandidateSignUpPage = () => {
                         </button>
                     </form>
 
-                    <div className="text-center mt-4 text-gray-500">or</div>
+                    <div className="text-center mt-4 mb-4 text-gray-500">or</div>
 
                     {/* Google Signup Button */}
 
@@ -184,12 +184,12 @@ const CandidateSignUpPage = () => {
                                 Sign In
                             </a>
                         </div>
-                        <div>
+                        {/* <div>
                             Are you a recruiter?{" "}
                             <a href="/recruiter/signup" className="text-blue-600 font-medium">
                                 Sign up here
                             </a>
-                        </div>
+                        </div> */}
                     </div>
 
                 </div>

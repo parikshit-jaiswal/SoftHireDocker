@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-export default function SponsorLicenceCostEstimator() {
-    const [licenceType, setLicenceType] = useState('-');
+export default function SponsorLicenseCostEstimator() {
+    const [licenseType, setLicenseType] = useState('-');
     const [sponsorSize, setSponsorSize] = useState('Small');
     const [priorityProcessing, setPriorityProcessing] = useState('No');
-    const [licenceFee, setLicenceFee] = useState('£536');
+    const [licenseFee, setLicenseFee] = useState('£536');
     const [priorityFee, setPriorityFee] = useState('£500');
     const [totalFee, setTotalFee] = useState('£1,036.00');
 
@@ -20,7 +20,7 @@ export default function SponsorLicenceCostEstimator() {
         if (sponsorSize === 'Large') {
             baseFee = 1476;
         }
-        if (licenceType === 'Temporary Worker') {
+        if (licenseType === 'Temporary Worker') {
             baseFee = 536;
         }
 
@@ -29,13 +29,13 @@ export default function SponsorLicenceCostEstimator() {
             priority = 500;
         }
 
-        setLicenceFee(`£${baseFee}`);
+        setLicenseFee(`£${baseFee}`);
         setPriorityFee(`£${priority}`);
         setTotalFee(`£${(baseFee + priority).toFixed(2)}`);
-    }, [licenceType, sponsorSize, priorityProcessing]);
+    }, [licenseType, sponsorSize, priorityProcessing]);
 
     const handleReset = () => {
-        setLicenceType('Skilled Worker');
+        setLicenseType('Skilled Worker');
         setSponsorSize('Small');
         setPriorityProcessing('No');
     };
@@ -43,18 +43,18 @@ export default function SponsorLicenceCostEstimator() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white rounded-lg shadow-md w-full max-w-lg p-6">
-                <h1 className="text-2xl font-bold mb-6">Sponsor Licence Cost Estimator</h1>
+                <h1 className="text-2xl font-bold mb-6">Sponsor License Cost Estimator</h1>
 
-                {/* Type of Licence */}
+                {/* Type of License */}
                 <div className="mb-6">
                     <div className="flex justify-between items-center mb-2">
-                        <label className="font-medium text-gray-800">Type of Licence</label>
+                        <label className="font-medium text-gray-800">Type of License</label>
                         <span className="text-xs text-gray-500">Required</span>
                     </div>
                     <div className="relative">
                         <select
-                            value={licenceType}
-                            onChange={(e) => setLicenceType(e.target.value)}
+                            value={licenseType}
+                            onChange={(e) => setLicenseType(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded bg-white appearance-none pr-8"
                         >
                             {options.map((option, index) => (
@@ -112,8 +112,8 @@ export default function SponsorLicenceCostEstimator() {
                 {/* Fee Breakdown */}
                 <div className="flex gap-4 mb-4">
                     <div className="flex-1 bg-gray-100 p-3 rounded">
-                        <p className="text-sm text-gray-600 mb-1">Licence Fee</p>
-                        <p className="text-lg font-semibold">{licenceFee}</p>
+                        <p className="text-sm text-gray-600 mb-1">License Fee</p>
+                        <p className="text-lg font-semibold">{licenseFee}</p>
                     </div>
                     <div className="flex-1 bg-gray-100 p-3 rounded">
                         <p className="text-sm text-gray-600 mb-1">Priority Fee</p>
@@ -123,7 +123,7 @@ export default function SponsorLicenceCostEstimator() {
 
                 {/* Total Fee */}
                 <div className="bg-blue-100 p-4 rounded mb-4">
-                    <p className="text-sm text-blue-800 mb-1">Total Licence Fee</p>
+                    <p className="text-sm text-blue-800 mb-1">Total License Fee</p>
                     <p className="text-xl font-bold">{totalFee}</p>
                 </div>
 

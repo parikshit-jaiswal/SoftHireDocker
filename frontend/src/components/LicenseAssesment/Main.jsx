@@ -20,15 +20,15 @@ function Main() {
     const data = [
         {
             title: 'Why It’s Important for Your Business',
-            description: 'To hire international talent in the UK, businesses must hold a valid Sponsor Licence. This licence allows employers to legally sponsor skilled workers from outside the UK, filling critical skill gaps and driving business growth. With a Sponsor Licence, your organization gains the ability to tap into a global pool of qualified candidates, helping you stay competitive in today’s dynamic market.',
-            image: '/LicenceAssessment/rightComp.png',
+            description: 'To hire international talent in the UK, businesses must hold a valid Sponsor License. This license allows employers to legally sponsor skilled workers from outside the UK, filling critical skill gaps and driving business growth. With a Sponsor License, your organization gains the ability to tap into a global pool of qualified candidates, helping you stay competitive in today’s dynamic market.',
+            image: '/LicenseAssessment/rightComp.png',
             imgDir: "right"
         },
         {
             title: 'Eligibility Criteria',
             description:
                 <div className='space-y-3'>
-                    <p>To qualify for a Sponsor Licence, your business must:</p>
+                    <p>To qualify for a Sponsor License, your business must:</p>
                     <p className='flex gap-4'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 30 29" fill="none">
                             <path d="M8.925 14.5L12.975 18.55L21.075 10.45M28.5 14.5C28.5 21.9558 22.4558 28 15 28C7.54415 28 1.5 21.9558 1.5 14.5C1.5 7.04415 7.54415 1 15 1C22.4558 1 28.5 7.04415 28.5 14.5Z" fill="#276EF1" />
@@ -62,7 +62,7 @@ function Main() {
                         <p>Be compliant with UK immigration rules and not have any history of immigration offences</p>
                     </p>
                 </div>,
-            image: '/LicenceAssessment/leftComp.png',
+            image: '/LicenseAssessment/leftComp.png',
             imgDir: "left"
         }
     ];

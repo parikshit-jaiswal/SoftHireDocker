@@ -22,37 +22,71 @@ export const plans = [
   },
 ];
 
-export const PricingDetails = [
+export const SubscriptionDetails = [
   {
-    name: "Basic Plan",
-    // description: "Best for Startups",
-    price: "£1200",
-    features: ["Sponsorship license "],
-    popular: true,
-  },
-  {
-    name: "Standard Plan",
-    // description: "Best for Growing Businesses",
-    price: "£1650",
+    name: "Starter",
+    description: "Stay compliant with minimal spend",
+    price: "£120/month",
     features: [
-      "Sponsorship licence",
-      "Access to Recruitment Portal",
-      "CoS assignment-upto 5",
-      "Visa assistance for recruits",
-      "On-going Sponsorship Compliance for upto 10 Employees",
+      "Compliance Dashboard + alerts for up to 5 CoS",
+      "Manual CoS creation & right-to-work checklist",
+      "1 Level-1 user",
+      "Email support"
     ],
     popular: true,
   },
   {
-    name: "Premium Plan",
-    // description: "Best for Startups",
-    price: "£2200",
+    name: "Growth",
+    description: "Save time with automation & shared visibility",
+    price: "£300/month",
     features: [
-      "Sponsorship licence ",
-      "Access to Recruitment Portal",
-      "Upto 20 CoS assignment",
-      "Visa assistance for recruits",
-      "On-going Sponsorship Compliance for unlimited Employees",
+      "Compliance Dashboard + alerts for up to 10 CoS",
+      "Automated Reporting",
+      "CoS assignment-upto 5",
+      "Document storage (2 GB) with expiry reminders",
+      "Up to 3 Level-1 users",
+      "Same Day Support"
+    ],
+    popular: true,
+  },
+  {
+    name: "Enterprise",
+    description: "Zero-friction compliance; API-first extensibility",
+    price: "Custom",
+    features: [
+      "Real-time, event-triggered automation",
+      "HRIS integration",
+      "Unlimited users & granular roles (auditor, adviser)",
+      "Advanced analytics & API access",
+    ],
+  },
+];
+export const SingleTimeServices = [
+  {
+    name: "Sponsor-license application",
+    // description: "Stay compliant with minimal spend",
+    price: "£1399",
+    features: [
+      "Sponsor license application fee",
+      "Home Office application fee",
+    ],
+    popular: false,
+  },
+  {
+    name: "Skilled Worker visa application",
+    // description: "Save time with automation & shared visibility",
+    price: "£350",
+    features: [
+
+    ],
+    popular: false,
+  },
+  {
+    name: "Dependant visa application",
+    // description: "Zero-friction compliance; API-first extensibility",
+    price: "£300",
+    features: [
+
     ],
   },
 ];
@@ -68,7 +102,7 @@ export const features = [
         premium: true,
       },
       {
-        name: "Sponsor licence assistance",
+        name: "Sponsor license assistance",
         basic: true,
         standard: true,
         premium: true,

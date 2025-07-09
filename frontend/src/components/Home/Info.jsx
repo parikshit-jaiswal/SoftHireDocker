@@ -1,7 +1,13 @@
 import { Zap } from 'lucide-react'
 import { Button } from '../ui/button'
 
-function Card({ heading, buttonText, icon }) {
+function Card({ heading, buttonText, icon, link }) {
+
+    const handleClick = () => {
+        if (link) {
+            window.location.href = link;
+        }
+    }
     return (
         <div className="border rounded-3xl p-3 py-6 mid:py-10 flex-grow flex flex-col space-y-3">
             <span className="iconGradient rounded-full h-8 w-8 md:h-12 md:w-12 flex items-center justify-center ">
@@ -10,7 +16,7 @@ function Card({ heading, buttonText, icon }) {
                 </span>
             </span>
             <p className=" sm:text-xl lg:text-2xl font-bold mb-3 h-[50%]">{heading}</p>
-            <Button className="bg-[#011627] hover:bg-[#011627] hover:opacity-90">{buttonText}</Button>
+            <Button onClick={handleClick} className="bg-[#011627] hover:bg-[#011627] hover:opacity-90">{buttonText}</Button>
         </div>
     )
 }
@@ -21,7 +27,8 @@ function Info() {
         {
             heading: 'Get Started on your Sponsor License Application here',
             buttonText: 'Know more',
-            icon: <Zap className='h-5 md:h-28' color="#ffffff" />
+            icon: <Zap className='h-5 md:h-28' color="#ffffff" />,
+            link: '/sponsor-license-assessment'
         },
         {
             heading: 'Learn about our Sponsorship Compliance Portal here',
@@ -35,7 +42,8 @@ function Info() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                     />
-                </svg>
+                </svg>,
+            link: '/about-sponsorship-compliance'
         },
         {
             heading: 'Access top international tech talent through our Recruitment Portal',
@@ -49,11 +57,21 @@ function Info() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                     />
-                </svg>
+                </svg>,
+            link: '/recruiter'
         },
     ]
 
     return (
+
+        <>
+            <div className="md:flex gap-8 mt-[5rem] mb-[5rem] space-y-5 lg:space-y-0">
+                {InfoData.map((data, index) => (
+                    <Card key={index} heading={data.heading} buttonText={data.buttonText} icon={data.icon} link={data.link} />
+                ))}
+            </div>
+        </>
+
         // <>
         //     <div className="lg:flex gap-8 mt-[5rem] mb-[5rem] space-y-5 lg:space-y-0">
         //         <div className="border rounded-3xl p-3 py-6 mid:py-10 flex-grow flex flex-col lg:min-h-[300px]">
@@ -101,14 +119,6 @@ function Info() {
         //         </div>
         //     </div>
         // </>
-        <>
-            <div className="md:flex gap-8 mt-[5rem] mb-[5rem] space-y-5 lg:space-y-0">
-                {InfoData.map((data, index) => (
-                    <Card key={index} heading={data.heading} buttonText={data.buttonText} icon={data.icon} />
-                ))}
-            </div>
-
-        </>
     )
 }
 

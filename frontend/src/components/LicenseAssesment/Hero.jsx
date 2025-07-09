@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function Hero() {
     return (
-        <div className="h-[65vh] mt-[4rem] bg-[linear-gradient(0deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.5)_100%),url('/LicenceAssessment/LicenceAssessmentHero.png')] bg-cover bg-center bg-no-repeat flex items-center justify-center text-white">
+        <div className="h-[65vh] mt-[4rem] bg-[linear-gradient(0deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.5)_100%),url('/LicenseAssessment/LicenseAssessmentHero.png')] bg-cover bg-center bg-no-repeat flex items-center justify-center text-white">
             <div className="text-center">
                 <p className='text-4xl lg:text-6xl font-bold'>Sponser License Eligibility Assessment</p>
                 <p className='lg:w-[70%] mx-auto mt-6 font-medium'>Quickly assess your company's eligibility to hire international talent.</p>

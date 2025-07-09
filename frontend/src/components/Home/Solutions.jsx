@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 
 const solutionsData = [
     {
-        title: 'Sponsor Licence Eligibility Assessment',
-        description: "Easily check if your business meets the requirements to apply for a Sponsor Licence and start hiring international talent.",
+        title: 'Sponsor License Eligibility Assessment',
+        description: "Easily check if your business meets the requirements to apply for a Sponsor License and start hiring international talent.",
         icon: (
             <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
                 <path d="M22 11.0857V12.0057C21.9988 14.1621 21.3005 16.2604 20.0093 17.9875C18.7182 19.7147 16.9033 20.9782 14.8354 21.5896C12.7674 22.201 10.5573 22.1276 8.53447 21.3803C6.51168 20.633 4.78465 19.2518 3.61096 17.4428C2.43727 15.6338 1.87979 13.4938 2.02168 11.342C2.16356 9.19029 2.99721 7.14205 4.39828 5.5028C5.79935 3.86354 7.69279 2.72111 9.79619 2.24587C11.8996 1.77063 14.1003 1.98806 16.07 2.86572M22 4L12 14.01L9 11.01" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
         ),
-        link: '/sponsor-licence-assessment'
+        link: '/sponsor-license-assessment'
     },
     {
         title: 'Skilled Worker Salary Calculator',
@@ -24,8 +24,8 @@ const solutionsData = [
         link: '/salary-calculator'
     },
     {
-        title: 'Sponsor Licence Cost Estimator',
-        description: "Get an accurate estimate of all fees involved in applying for and maintaining a Sponsor Licence.",
+        title: 'Sponsor License Cost Estimator',
+        description: "Get an accurate estimate of all fees involved in applying for and maintaining a Sponsor License.",
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 49 49" fill="none">
                 <path d="M36.7498 4.08325H12.2498C9.99467 4.08325 8.1665 5.91142 8.1665 8.16659V40.8333C8.1665 43.0884 9.99467 44.9166 12.2498 44.9166H36.7498C39.005 44.9166 40.8332 43.0884 40.8332 40.8333V8.16659C40.8332 5.91142 39.005 4.08325 36.7498 4.08325Z" stroke="#E65C4F" stroke-width="4.83333" stroke-linecap="round" stroke-linejoin="round" />

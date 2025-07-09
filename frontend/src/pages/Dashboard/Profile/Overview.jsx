@@ -1,16 +1,117 @@
-import React from "react";
-import { Linkedin, Github } from "lucide-react"; // Import your icons properly
+import React, { useState, useEffect } from "react";
+import { Linkedin, Github, Globe, Twitter, Download, Eye } from "lucide-react";
+import profileService from "@/Api/profileService";
+import userService from "@/Api/UserService";
 
 const Overview = () => {
-  const handleResumeClick = () => {
-    // Handle resume download or redirection
-    const resumeUrl = localStorage.getItem("resume");
-    if (resumeUrl) {
-      window.open(resumeUrl, "_blank"); // Opens the resume in a new tab
-    } else {
-      alert("No resume URL found in localStorage.");
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [resumeUrl, setResumeUrl] = useState(null);
+
+  useEffect(() => {
+    loadProfileData();
+    loadResumeData();
+  }, []);
+
+  const loadProfileData = async () => {
+    setLoading(true);
+    try {
+      const profileResult = await profileService.getCurrentUserProfile();
+      
+      if (profileResult.success) {
+        const formattedProfile = profileService.formatProfileData(profileResult.data);
+        setProfileData(formattedProfile);
+      } else {
+        setError(profileResult.message);
+      }
+    } catch (err) {
+      setError("Failed to load profile data");
+      console.error("Profile loading error:", err);
+    } finally {
+      setLoading(false);
     }
   };
+
+  const loadResumeData = async () => {
+    try {
+      // Check localStorage first
+      const localResume = localStorage.getItem("resume");
+      if (localResume) {
+        setResumeUrl(localResume);
+        return;
+      }
+
+      // Try to get from user profile
+      const result = await userService.getProfile();
+      if (result.success && result.data?.resume) {
+        setResumeUrl(result.data.resume);
+        localStorage.setItem("resume", result.data.resume);
+      }
+    } catch (error) {
+      console.error("Failed to load resume:", error);
+    }
+  };
+
+  const handleResumeClick = () => {
+    if (resumeUrl) {
+      window.open(resumeUrl, "_blank");
+    } else {
+      alert("No resume uploaded yet. Please upload your resume in the Resume/CV tab.");
+    }
+  };
+
+  const getSocialIcon = (platform) => {
+    switch (platform.toLowerCase()) {
+      case 'linkedin': return <Linkedin size={20} className="text-gray-600" />;
+      case 'github': return <Github size={20} className="text-gray-600" />;
+      case 'twitter': return <Twitter size={20} className="text-gray-600" />;
+      case 'website': return <Globe size={20} className="text-gray-600" />;
+      default: return <Globe size={20} className="text-gray-600" />;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-500 mb-4">{error}</p>
+        <button 
+          onClick={loadProfileData}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (!profileData) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500 mb-4">No profile data found. Please create your profile first.</p>
+        <button 
+          onClick={() => window.location.href = "/dashboard/profile?tab=Profile"}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Create Profile
+        </button>
+      </div>
+    );
+  }
+
+  const formattedWorkExperience = profileService.formatWorkExperience(profileData.workExperience);
+  const formattedEducation = profileService.formatEducation(profileData.education);
+
+  // Get display image
+  const displayImage = profileData.profileImage || profileData.user?.avatar;
 
   return (
     <>
@@ -22,33 +123,75 @@ const Overview = () => {
         <div className="flex items-start mb-8">
           <div className="mr-6">
             <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200">
-              <img
-                src="/api/placeholder/96/96"
-                alt="Jenna Doe"
-                className="w-full h-full object-cover"
-              />
+              {displayImage ? (
+                <img
+                  src={displayImage}
+                  alt={profileData.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(profileData.name)}&background=6366f1&color=fff`;
+                  }}
+                />
+              ) : (
+                <img
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(profileData.name)}&background=6366f1&color=fff`}
+                  alt={profileData.name}
+                  className="w-full h-full object-cover"
+                />
+              )}
             </div>
           </div>
           <div className="flex-1">
             <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-bold">Jenna Doe</h3>
+              <div>
+                <h3 className="text-2xl font-bold">{profileData.name}</h3>
+                {profileData.identity?.displayPronouns && profileData.identity?.pronouns && (
+                  <span className="text-sm text-gray-600 mt-1">({profileData.identity.pronouns})</span>
+                )}
+              </div>
               <div className="flex items-center space-x-2">
-                <Linkedin size={20} className="text-gray-600" />
-                <Github size={20} className="text-gray-600" />
-                <button
-                  className="bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded"
-                  onClick={handleResumeClick}
-                >
-                  Resume
-                </button>
+                {/* Social Profile Icons */}
+                {profileData.socialProfiles && Object.entries(profileData.socialProfiles).map(([platform, url]) => 
+                  url && (
+                    <a
+                      key={platform}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-blue-600 transition-colors"
+                      title={platform}
+                    >
+                      {getSocialIcon(platform)}
+                    </a>
+                  )
+                )}
+                
+                {/* Resume Button */}
+                <div className="flex items-center space-x-1">
+                  <button
+                    className={`flex items-center space-x-1 px-3 py-1 rounded text-sm transition-colors ${
+                      resumeUrl 
+                        ? "bg-green-100 text-green-800 hover:bg-green-200" 
+                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                    }`}
+                    onClick={handleResumeClick}
+                  >
+                    {resumeUrl ? <Eye size={14} /> : <Download size={14} />}
+                    <span>{resumeUrl ? "View Resume" : "No Resume"}</span>
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="flex items-center mt-2 mb-2">
-              <span className="text-gray-700">Manchester, UK</span>
-              <span className="mx-2 text-gray-500">•</span>
-              <span className="text-gray-700">0.5 hours ahead</span>
-              <span className="mx-2 text-gray-500">•</span>
-              <span className="text-gray-700">Open to remote</span>
+            <div className="flex items-center mt-2 mb-2 text-gray-600">
+              <span>{profileData.location}</span>
+              <span className="mx-2">•</span>
+              <span>{profileData.primaryRole}</span>
+              {profileData.yearsOfExperience && (
+                <>
+                  <span className="mx-2">•</span>
+                  <span>{profileData.yearsOfExperience} experience</span>
+                </>
+              )}
             </div>
             <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
               Active Today
@@ -56,112 +199,103 @@ const Overview = () => {
           </div>
         </div>
 
-        {/* Looking for */}
-        <div className="mb-8">
-          <h4 className="text-sm text-gray-500 mb-2">Looking for</h4>
-          <div className="pl-4 border-l-2 border-gray-300">
-            <p className="text-gray-700">
-              I am looking for a UI/UX design internship where I can apply my
-              passion for clean, user-centered design to create intuitive user
-              interfaces. I enjoy working with cross-functional teams and
-              constantly seek opportunities to learn and grow in fast-paced
-              environments.
-            </p>
+        {/* Bio / Looking for */}
+        {profileData.bio && (
+          <div className="mb-8">
+            <h4 className="text-sm text-gray-500 mb-2">About</h4>
+            <div className="pl-4 border-l-2 border-gray-300">
+              <p className="text-gray-700">{profileData.bio}</p>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Achievements */}
-        <div className="mb-8">
-          <h4 className="text-sm text-gray-500 mb-2">Achievements</h4>
-          <div className="pl-4 border-l-2 border-gray-300">
-            <ul className="list-disc pl-5 text-gray-700">
-              <li>
-                Designed the onboarding experience for a fintech app with 20K+
-                users
-              </li>
-              <li>Winner of the UI Sprint Challenge 2024 by DesignX</li>
-            </ul>
+        {/* Work Experience */}
+        {formattedWorkExperience.length > 0 && (
+          <div className="mb-8">
+            <h4 className="text-sm text-gray-500 mb-2">Work Experience</h4>
+            <div className="space-y-4">
+              {formattedWorkExperience.map((exp, index) => (
+                <div key={index} className="pl-4 border-l-2 border-gray-300">
+                  <div className="font-semibold text-gray-900">{exp.title}</div>
+                  <div className="text-gray-700">{exp.company}</div>
+                  <div className="text-sm text-gray-500">{exp.startDate} - {exp.endDate}</div>
+                  {exp.description && (
+                    <p className="text-gray-700 mt-1 text-sm">{exp.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Education */}
-        <div className="mb-8">
-          <h4 className="text-sm text-gray-500 mb-2">Education</h4>
-          <div>
-            <p className="font-medium">Bachelor's, Design & Technology</p>
-            <p className="text-gray-700">National Institute of Design • 2026</p>
+        {formattedEducation && (
+          <div className="mb-8">
+            <h4 className="text-sm text-gray-500 mb-2">Education</h4>
+            <div>
+              <p className="font-medium">
+                {formattedEducation.degree}
+                {formattedEducation.major && `, ${formattedEducation.major}`}
+              </p>
+              <p className="text-gray-700">
+                {formattedEducation.college}
+                {formattedEducation.graduationYear && ` • ${formattedEducation.graduationYear}`}
+              </p>
+              {formattedEducation.gpa && (
+                <p className="text-sm text-gray-600">GPA: {formattedEducation.gpa}</p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Skills */}
-        <div className="mb-8">
-          <h4 className="text-sm text-gray-500 mb-2">Skills</h4>
-          <div className="flex flex-wrap gap-2">
-            {[
-              "Figma",
-              "Adobe XD",
-              "Prototyping",
-              "Design Thinking",
-              "HTML",
-              "UI/UX Design",
-            ].map((skill, index) => (
-              <span
-                key={index}
-                className="bg-gray-100 px-3 py-1 rounded-full text-sm"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Ideal Next Opportunity */}
-        <div>
-          <h4 className="text-lg font-medium mb-4">Ideal Next Opportunity</h4>
-
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <h5 className="text-sm text-gray-500 mb-2">Desired Salary</h5>
-              <div className="bg-gray-100 px-3 py-1 rounded-full text-sm inline-block">
-                Flexible
-              </div>
-            </div>
-
-            <div>
-              <h5 className="text-sm text-gray-500 mb-2">Desired Role</h5>
-              <div className="bg-gray-100 px-3 py-1 rounded-full text-sm inline-block">
-                UI/UX Designer
-              </div>
-            </div>
-
-            <div>
-              <h5 className="text-sm text-gray-500 mb-2">Remote Work</h5>
-              <div className="flex space-x-2">
-                <div className="bg-gray-100 px-3 py-1 rounded-full text-sm">
-                  Onsite
-                </div>
-                <div className="bg-blue-100 px-3 py-1 rounded-full text-sm text-blue-700">
-                  Remote
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h5 className="text-sm text-gray-500 mb-2">Desired Location</h5>
-              <div className="bg-gray-100 px-3 py-1 rounded-full text-sm inline-block">
-                Manchester
-              </div>
-            </div>
-
-            <div>
-              <h5 className="text-sm text-gray-500 mb-2">
-                Desired Company Size
-              </h5>
-              <div className="bg-gray-100 px-3 py-1 rounded-full text-sm inline-block">
-                1000+
-              </div>
+        {profileData.skills && profileData.skills.length > 0 && (
+          <div className="mb-8">
+            <h4 className="text-sm text-gray-500 mb-2">Skills</h4>
+            <div className="flex flex-wrap gap-2">
+              {profileData.skills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="bg-gray-100 px-3 py-1 rounded-full text-sm"
+                >
+                  {skill}
+                </span>
+              ))}
             </div>
           </div>
+        )}
+
+        {/* Achievements */}
+        {profileData.achievements && profileData.achievements !== 'No achievements listed' && (
+          <div className="mb-8">
+            <h4 className="text-sm text-gray-500 mb-2">Achievements</h4>
+            <div className="pl-4 border-l-2 border-gray-300">
+              <p className="text-gray-700">{profileData.achievements}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Open to Roles */}
+        {profileData.openToRoles && profileData.openToRoles.length > 0 && (
+          <div className="mb-8">
+            <h4 className="text-sm text-gray-500 mb-2">Open to Roles</h4>
+            <div className="flex flex-wrap gap-2">
+              {profileData.openToRoles.map((role, index) => (
+                <span
+                  key={index}
+                  className="bg-blue-100 px-3 py-1 rounded-full text-sm text-blue-800"
+                >
+                  {role}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Contact Information */}
+        <div className="pt-4 border-t border-gray-200">
+          <h4 className="text-sm text-gray-500 mb-2">Contact</h4>
+          <p className="text-gray-700">{profileData.email}</p>
         </div>
       </div>
     </>

@@ -1,7 +1,15 @@
 import React from "react";
 import { MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // ✅ ADD: Import useNavigate
 
 const JobCard = ({ job, isSaved, onSave }) => {
+  const navigate = useNavigate(); // ✅ ADD: Navigation hook
+
+  // ✅ ADD: Handle learn more click
+  const handleLearnMore = () => {
+    navigate(`/dashboard/job/${job._id || job.id}`);
+  };
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4">
       <div className="flex justify-between">
@@ -74,7 +82,10 @@ const JobCard = ({ job, isSaved, onSave }) => {
         >
           {isSaved ? "Saved" : "Save"}
         </button>
-        <button className="px-4 py-2 bg-orange-500 text-white rounded">
+        <button
+          className="px-4 py-2 bg-orange-500 text-white rounded"
+          onClick={handleLearnMore} // ✅ UPDATED: Navigate to job details
+        >
           Learn More
         </button>
       </div>

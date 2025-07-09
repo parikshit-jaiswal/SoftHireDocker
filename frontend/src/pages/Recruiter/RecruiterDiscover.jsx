@@ -23,6 +23,7 @@ function RecruiterDiscover() {
       setLoading(true);
       const response = await searchApplicants(filters, page, limit);
       setData(response.applicants);
+      // console.log(response.applicants)
       // If your API returns total count, use it to set totalPages
       if (response.totalCount) {
         setTotalPages(Math.ceil(response.totalCount / limit));
@@ -44,18 +45,18 @@ function RecruiterDiscover() {
   return (
     <div className="relative h-screen w-screen pb-20">
       <div className="flex h-full w-full">
-        <DiscoverSidebar />
+        <DiscoverSidebar discoverApplicants={discoverApplicants} />
         <div className="w-full overflow-y-auto">
           {loading ? (
             <div className="flex justify-center items-center w-full h-full"><Loader /></div>
           ) : (
             <div className="flex-col w-full space-y-5 ">
-              {data.length === 0 ? (
+              {(Array.isArray(data) ? data : []).length === 0 ? (
                 <div className="flex justify-center items-center h-full w-full text-gray-500 text-lg font-semibold">
                   No applicants found.
                 </div>
               ) : (
-                data.map((applicant) => (
+                (Array.isArray(data) ? data : []).map((applicant) => (
                   <DiscoverProfile key={applicant._id} data={applicant} />
                 ))
               )}

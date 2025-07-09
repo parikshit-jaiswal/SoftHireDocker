@@ -5,6 +5,7 @@ import {
   Briefcase,
   ClipboardList,
   MessageSquare,
+  CreditCard, // Add this for Sponsorship icon
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -17,6 +18,7 @@ const Sidebar = () => {
     { name: "Jobs", icon: Briefcase, path: "/dashboard/jobs" },
     { name: "Applied", icon: ClipboardList, path: "/dashboard/applied" },
     { name: "Messages", icon: MessageSquare, path: "/dashboard/messages" },
+    { name: "Service", icon: CreditCard, path: "/dashboard/service" }, // Add Sponsorship option
   ];
 
   return (

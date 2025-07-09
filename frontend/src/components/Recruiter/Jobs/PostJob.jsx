@@ -67,6 +67,7 @@ function PostJob() {
   const [contactPerson, setContactPerson] = useState({ name: '', position: '', location: '', experience: '' });
   const [isDraft, setIsDraft] = useState(false);
   const [value, setValue] = useState('');
+  const [timezones, setTimezones] = useState([]);
 
   const [relocateOption, setRelocateOption] = useState('');
   const [visaOption, setVisaOption] = useState('');
@@ -212,12 +213,14 @@ function PostJob() {
 
   // Modified handleSubmit to accept a draft flag
   const handleSubmit = async (e, draft) => {
+    console.log(draft)
     if (e) e.preventDefault();
     setSuccessMessage('');
     setIsDraft(draft);
     const validationErrors = validate();
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) {
+      toast.error("Some required fields are missing. Please check the form.");
       return;
     }
     setIsSubmitting(true);
@@ -247,7 +250,7 @@ function PostJob() {
         autoSkipVisaCandidates,
         autoSkipRelocationCandidates,
         contactPerson,
-        isDraft: isDraft
+        isDraft: draft
       };
       // console.log(formData);
       try {
@@ -263,6 +266,7 @@ function PostJob() {
         setErrors({});
       } catch (err) {
         setErrors({ api: err?.response?.data?.message || 'Failed to post job.' });
+        toast.error("Some error occured while posting job.Please try again later.")
       } finally {
         setIsSubmitting(false);
       }
@@ -680,6 +684,8 @@ function PostJob() {
                   suggestions={timeZoneOptions}
                   placeholder="Select timezone"
                   disabled={remotePolicy === 'In Office'}
+                  value={timezones}
+                  onChange={setTimezones}
                 />
               </div>
               <div className="space-y-1">

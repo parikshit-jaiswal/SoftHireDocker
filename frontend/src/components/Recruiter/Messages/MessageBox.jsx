@@ -1,31 +1,28 @@
-import React, { useState, useRef, useEffect, use } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Paperclip, Send, MoreVertical } from 'lucide-react';
-import { io } from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
-import { addMessage, addRecentChats, setMessages, setNewChat, setReceiver, setRecentChats, setSender } from '@/redux/chatSlice';
+import {
+    addMessage, addRecentChats, setMessages,
+    setNewChat, setReceiver, setRecentChats, setSender
+} from '@/redux/chatSlice';
 import { getChatsWithUser, getRecentChats } from '@/Api/ChatServices';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Loader from '@/components/miniComponents/Loader';
-
-const socket = io(import.meta.env.VITE_SERVER_URL, { withCredentials: true }); // replace with your backend URL
+import socket from '@/sockets/socket';
 
 function MessageBox() {
-
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.auth);
     const { sender, receiver, messages, recentChats, newChat } = useSelector((state) => state.chat);
-    // console.log("Sender:", sender, "Receiver:", receiver);
-    // console.log("Messages:", messages);
-    const currentUserId = sender;
-    const receiverId = receiver;
-    const selectedUser = (Array.isArray(recentChats) ? recentChats : [])?.find(chat => chat._id === receiverId) || {};
-    // console.log("Selected User:", selectedUser);
 
     const [message, setMessage] = useState('');
     const [messageLoading, setMessageLoading] = useState(false);
-
     const messagesEndRef = useRef(null);
     const messagesContainerRef = useRef(null);
+
+    const currentUserId = user?._id;
+    const receiverId = receiver;
+    const selectedUser = (Array.isArray(recentChats) ? recentChats : [])?.find(chat => chat._id === receiverId) || {};
 
     const linkify = (text) => {
         const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -48,18 +45,18 @@ function MessageBox() {
         });
     };
 
+    // Initial setup
     useEffect(() => {
         dispatch(setNewChat(null));
-    }, [location.pathname, dispatch]);
+    }, [dispatch]);
 
+    // Fetch recent chats
     const fetchRecentChats = async () => {
         try {
             const recentChats = await getRecentChats();
-            // console.log("Recent Chats:", recentChats);
             dispatch(setRecentChats(recentChats));
             if (newChat) {
                 dispatch(addRecentChats(newChat));
-                // console.log("New chat added:", newChat);
                 dispatch(setReceiver(newChat._id));
             }
         } catch (error) {
@@ -67,6 +64,7 @@ function MessageBox() {
         }
     };
 
+    // Fetch messages with selected user
     const fetchChatsWithUser = async (receiverId) => {
         try {
             setMessageLoading(true);
@@ -79,32 +77,62 @@ function MessageBox() {
         }
     };
 
-    // Fetch recent chats on mount and when receiverId changes
+    // Set sender and register socket
     useEffect(() => {
-        if (receiverId) {
-            fetchChatsWithUser(receiverId);
+        if (user?._id) {
+            dispatch(setSender(user._id));
+            if (!socket.connected) {
+                socket.connect();
+            }
+            socket.emit("register", user._id);
+            console.log("Socket registered:", user._id);
         }
-    }, [dispatch, receiverId]);
+    }, [user?._id]);
 
+    // Socket connection/debug logging
     useEffect(() => {
-        dispatch(setRecentChats([]));
-        fetchRecentChats();
+
+        console.log("Socket status:", socket.connected);
+        socket.on("connect", () => {
+            console.log("Socket connected:", socket.id);
+        });
+
+        socket.on("connect_error", (err) => {
+            console.error("Socket connection error:", err);
+        });
+
+        return () => {
+            socket.off("connect");
+            socket.off("connect_error");
+        };
     }, []);
 
-    // Connect and register user
+    // Listen to new messages
     useEffect(() => {
-        dispatch(setSender(user?._id))
-        socket.emit("register", currentUserId);
-
         socket.on("new_message", (msg) => {
+            console.log("New message received:", msg);
             dispatch(addMessage(msg));
         });
 
         return () => {
             socket.off("new_message");
         };
-    }, [dispatch, currentUserId, receiverId]);
+    }, [dispatch]);
 
+    // Fetch chats when receiver changes
+    useEffect(() => {
+        if (receiverId) {
+            fetchChatsWithUser(receiverId);
+        }
+    }, [receiverId]);
+
+    // Fetch recent chats on mount
+    useEffect(() => {
+        dispatch(setRecentChats([]));
+        fetchRecentChats();
+    }, []);
+
+    // Scroll to bottom on message change
     useEffect(() => {
         if (!messageLoading) {
             messagesContainerRef.current?.scrollTo({
@@ -115,7 +143,7 @@ function MessageBox() {
     }, [messages, messageLoading]);
 
     const handleSendMessage = () => {
-        if (message.trim()) {
+        if (message.trim() && currentUserId && receiverId) {
             const msgPayload = {
                 sender: currentUserId,
                 receiver: receiverId,
@@ -135,7 +163,6 @@ function MessageBox() {
         }
     };
 
-
     if (!selectedUser || !selectedUser._id) {
         return (
             <div className="flex items-center justify-center h-full w-full">
@@ -148,8 +175,8 @@ function MessageBox() {
         <div className="py-2 w-full m-5 mb-20 shadow-sm">
             <div className="w-full h-full flex flex-col bg-white border border-gray-300 shadow rounded-lg">
                 {/* Header */}
-                <div className="flex items-center gap-3 p-2 px-4 border border-b-gray-200 shadow-sm shrink-0 justify-between">
-                    <div className="flex items-center gap-3 shrink-0">
+                <div className="flex items-center gap-3 p-2 px-4 border border-b-gray-200 shadow-sm justify-between">
+                    <div className="flex items-center gap-3">
                         <Avatar className="h-14 w-14">
                             <AvatarImage src={selectedUser.profileImage} />
                             <AvatarFallback>{selectedUser.name.charAt(0)}</AvatarFallback>
@@ -167,7 +194,7 @@ function MessageBox() {
                 {/* Messages */}
                 <div
                     ref={messagesContainerRef}
-                    className="p-4 space-y-4 overflow-y-auto flex-1"
+                    className="p-4 space-y-4 overflow-y-auto overflow-x-hidden flex-1"
                     style={{ maxHeight: '600px' }}
                 >
                     {messageLoading ? (
@@ -195,7 +222,7 @@ function MessageBox() {
                 </div>
 
                 {/* Input */}
-                <div className="border-t p-4 shrink-0">
+                <div className="border-t p-4">
                     <div className="flex items-center gap-2">
                         <button className="p-2 text-gray-400 hover:text-gray-600">
                             <Paperclip size={20} />

@@ -1,6 +1,7 @@
-import { jobPreferences } from "@/Api/profile";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { Eye, EyeOff, Trash2, RefreshCw } from "lucide-react";
+import jobPreferencesService from "@/Api/jobPreferencesService";
 
 export default function Preferences() {
   const initialFormData = {
@@ -32,14 +33,64 @@ export default function Preferences() {
       "Public Company": "Ideal",
     },
   };
-  const [formData, setFormData] = useState(initialFormData);
 
+  const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasExistingPreferences, setHasExistingPreferences] = useState(false);
+  const [showSavedPreferences, setShowSavedPreferences] = useState(false);
+  const [savedPreferencesData, setSavedPreferencesData] = useState(null);
+
+  // Load existing preferences on component mount
+  useEffect(() => {
+    loadExistingPreferences();
+  }, []);
+
+  const loadExistingPreferences = async () => {
+    setIsLoading(true);
+    try {
+      const result = await jobPreferencesService.getJobPreferences();
+
+      if (result.success && result.data) {
+        // Store the raw saved data for display
+        setSavedPreferencesData(result.data);
+
+        // Format the data for display in the form
+        const formattedData = jobPreferencesService.formatPreferencesForDisplay(
+          result.data
+        );
+        setFormData(formattedData);
+        setHasExistingPreferences(true);
+
+        // Don't show success toast on initial load, only when explicitly loading
+        console.log("Existing preferences loaded successfully");
+      } else {
+        // No existing preferences found, use initial form data
+        console.log("No existing preferences found, starting fresh");
+        setHasExistingPreferences(false);
+        setSavedPreferencesData(null);
+      }
+    } catch (error) {
+      console.error("Failed to load preferences:", error);
+      setIsError(true);
+      setErrorMessage("Failed to load existing preferences");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const refreshPreferences = async () => {
+    toast.info("Refreshing preferences...");
+    await loadExistingPreferences();
+    if (hasExistingPreferences) {
+      toast.success("Preferences refreshed successfully!");
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -110,7 +161,7 @@ export default function Preferences() {
     // Validate work location
     if (!formData.workLocation && !formData.openToRemote) {
       newErrors.workLocation =
-        "Please enter a workLocation or select 'Open to working remotely'";
+        "Please enter a work location or select 'Open to working remotely'";
     }
 
     // Validate remote preference if work remotely is selected
@@ -130,58 +181,6 @@ export default function Preferences() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const transformFormData = (formData) => {
-    // Map job types with correct values from schema
-    const openToMap = {
-      fullTime: "Full-time Employee",
-      contractor: "Contractor",
-      cofounder: "Co-founder",
-      freelancer: "Freelancer",
-      internship: "Internship",
-      partTime: "Part-time",
-      consultant: "Consultant",
-    };
-
-    // Format remote preference to match backend schema enum
-    let formattedRemotePreference = formData.remotePreference;
-    if (formData.remotePreference === "Remote only") {
-      formattedRemotePreference = "Remote Only";
-    }
-
-    // Map currency selections to correct format
-    const currencyMap = {
-      "United States Dollars ($)": "USD",
-      "Euro (€)": "EUR",
-      "British Pounds (£)": "GBP",
-      USD: "USD",
-      Euro: "EUR",
-      GBP: "GBP",
-    };
-
-    return {
-      needsSponsorship: formData.needsSponsorship === "Yes",
-      authorizedToWork: formData.authorizedToWork === "Yes",
-      jobType: formData.jobType,
-      openTo: Object.keys(formData.openTo)
-        .filter((key) => formData.openTo[key])
-        .map((type) => openToMap[type] || type),
-      workLocation: formData.workLocation,
-      openToRemote: formData.openToRemote,
-      remotePreference: formData.openToRemote ? formattedRemotePreference : undefined,
-      desiredSalary: formData.desiredSalary
-        ? Number(formData.desiredSalary)
-        : undefined,
-      salaryCurrency: currencyMap[formData.salaryCurrency] || "USD",
-      companySizePreferences: Object.entries(
-        formData.companySizePreferences
-      ).map(([size, preference]) => ({
-        size: size, // Use the size key directly as it already matches schema
-        ideal: preference === "Ideal",
-        interested: preference === "Ideal" || preference === "Yes",
-      })),
-    };
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -195,35 +194,272 @@ export default function Preferences() {
       return;
     }
 
-    const transformedData = transformFormData(formData);
+    const transformedData = jobPreferencesService.transformFormDataForAPI(formData);
 
     try {
-      await jobPreferences(transformedData);
+      let result;
 
-      // Success actions
-      setIsSuccess(true);
-      toast.success("Job preferences saved successfully!");
-      setFormData(initialFormData); // reset form
-      setErrors({});
-      setIsSubmitted(false);
+      if (hasExistingPreferences) {
+        // Update existing preferences
+        result = await jobPreferencesService.updateJobPreferences(transformedData);
+      } else {
+        // Create new preferences
+        result = await jobPreferencesService.saveJobPreferences(transformedData);
+      }
+
+      if (result.success) {
+        // Success actions
+        setIsSuccess(true);
+        setHasExistingPreferences(true);
+        setSavedPreferencesData(result.data);
+        toast.success(result.message || "Job preferences saved successfully!");
+        setErrors({});
+        setIsSubmitted(false);
+      } else {
+        throw new Error(result.message);
+      }
     } catch (err) {
       // Error handling
       setIsError(true);
       setErrorMessage(
-        err?.response?.data?.message ||
-          "Something went wrong. Please try again."
+        err?.message || err?.response?.data?.message || "Something went wrong. Please try again."
       );
       toast.error(
-        err?.response?.data?.message ||
-          "Something went wrong. Please try again."
+        err?.message || err?.response?.data?.message || "Something went wrong. Please try again."
       );
     } finally {
       setLoading(false);
     }
   };
 
+  const handleReset = () => {
+    if (window.confirm("Are you sure you want to reset the form? All unsaved changes will be lost.")) {
+      setFormData(initialFormData);
+      setErrors({});
+      setIsSubmitted(false);
+      setIsError(false);
+      setErrorMessage("");
+      setIsSuccess(false);
+      toast.info("Form reset to default values");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!hasExistingPreferences) {
+      toast.error("No preferences to delete");
+      return;
+    }
+
+    const confirmDelete = window.confirm(
+      "⚠️ DELETE CONFIRMATION\n\nAre you sure you want to permanently delete all your job preferences?\n\nThis action cannot be undone and will:\n• Remove all your saved preferences\n• Reset the form to default values\n• Require you to set up preferences again\n\nClick OK to delete or Cancel to keep your preferences."
+    );
+
+    if (confirmDelete) {
+      setLoading(true);
+      try {
+        const result = await jobPreferencesService.deleteJobPreferences();
+
+        if (result.success) {
+          setFormData(initialFormData);
+          setHasExistingPreferences(false);
+          setSavedPreferencesData(null);
+          setShowSavedPreferences(false);
+          toast.success("✅ Job preferences deleted successfully!");
+
+          // Clear any existing states
+          setIsSuccess(false);
+          setIsError(false);
+          setErrorMessage("");
+          setErrors({});
+          setIsSubmitted(false);
+        } else {
+          throw new Error(result.message);
+        }
+      } catch (error) {
+        toast.error("❌ Failed to delete preferences. Please try again.");
+        setIsError(true);
+        setErrorMessage("Failed to delete preferences. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const formatSavedPreferencesForDisplay = (data) => {
+    if (!data) return null;
+
+    return {
+      workAuthorization: {
+        needsSponsorship: data.needsSponsorship ? "Yes" : "No",
+        authorizedToWork: data.authorizedToWork ? "Yes" : "No",
+      },
+      jobDetails: {
+        jobType: data.jobType || "Not specified",
+        openTo: data.openTo && data.openTo.length > 0 ? data.openTo.join(", ") : "None selected",
+      },
+      location: {
+        workLocation: data.workLocation || "Not specified",
+        openToRemote: data.openToRemote ? "Yes" : "No",
+        remotePreference: data.remotePreference || "Not specified",
+      },
+      compensation: {
+        desiredSalary: data.desiredSalary 
+          ? `${data.salaryCurrency || 'USD'} ${data.desiredSalary.toLocaleString()}` 
+          : "Not specified",
+      },
+      companySizes: data.companySizePreferences || [],
+    };
+  };
+
+  // Show loading spinner while fetching existing preferences
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <span className="ml-3 text-gray-600">Loading your preferences...</span>
+      </div>
+    );
+  }
+
+  const displayData = formatSavedPreferencesForDisplay(savedPreferencesData);
+
   return (
     <div className="w-full max-w-auto mx-auto px-6 py-8 border border-gray-200 bg-white rounded-lg shadow-md">
+      {/* Header with status */}
+      <div className="mb-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Job Preferences</h1>
+          <div className="flex items-center space-x-3">
+            {hasExistingPreferences && (
+              <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                ✅ Preferences Saved
+              </span>
+            )}
+
+            <button
+              type="button"
+              onClick={refreshPreferences}
+              className="flex items-center space-x-1 px-3 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors"
+              title="Refresh preferences"
+            >
+              <RefreshCw size={16} />
+              <span>Refresh</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleReset}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors"
+            >
+              Reset Form
+            </button>
+
+            {hasExistingPreferences && (
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={loading}
+                className={`flex items-center space-x-1 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors ${
+                  loading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
+              >
+                <Trash2 size={16} />
+                <span>{loading ? "Deleting..." : "Delete All"}</span>
+              </button>
+            )}
+          </div>
+        </div>
+        <p className="text-gray-600 mt-2">
+          {hasExistingPreferences
+            ? "Update your job preferences to help us match you with better opportunities."
+            : "Set your job preferences to help us match you with the right opportunities."}
+        </p>
+      </div>
+
+      {/* Saved Preferences Display */}
+      {hasExistingPreferences && displayData && (
+        <div className="mb-8 border border-blue-200 rounded-lg bg-blue-50 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-blue-900">
+              📋 Your Saved Preferences
+            </h3>
+            <button
+              onClick={() => setShowSavedPreferences(!showSavedPreferences)}
+              className="flex items-center space-x-1 text-blue-700 hover:text-blue-900 transition-colors"
+            >
+              {showSavedPreferences ? <EyeOff size={18} /> : <Eye size={18} />}
+              <span>{showSavedPreferences ? "Hide" : "Show"} Details</span>
+            </button>
+          </div>
+
+          {showSavedPreferences && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+              {/* Work Authorization */}
+              <div className="bg-white p-4 rounded border">
+                <h4 className="font-semibold text-gray-900 mb-2">Work Authorization</h4>
+                <div className="space-y-1">
+                  <p><span className="font-medium">Needs Sponsorship:</span> {displayData.workAuthorization.needsSponsorship}</p>
+                  <p><span className="font-medium">Authorized to Work:</span> {displayData.workAuthorization.authorizedToWork}</p>
+                </div>
+              </div>
+
+              {/* Job Details */}
+              <div className="bg-white p-4 rounded border">
+                <h4 className="font-semibold text-gray-900 mb-2">Job Details</h4>
+                <div className="space-y-1">
+                  <p><span className="font-medium">Job Type:</span> {displayData.jobDetails.jobType}</p>
+                  <p><span className="font-medium">Also Open To:</span> {displayData.jobDetails.openTo}</p>
+                </div>
+              </div>
+
+              {/* Location Preferences */}
+              <div className="bg-white p-4 rounded border">
+                <h4 className="font-semibold text-gray-900 mb-2">Location</h4>
+                <div className="space-y-1">
+                  <p><span className="font-medium">Work Location:</span> {displayData.location.workLocation}</p>
+                  <p><span className="font-medium">Open to Remote:</span> {displayData.location.openToRemote}</p>
+                  {displayData.location.openToRemote === "Yes" && (
+                    <p><span className="font-medium">Remote Preference:</span> {displayData.location.remotePreference}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Compensation */}
+              <div className="bg-white p-4 rounded border">
+                <h4 className="font-semibold text-gray-900 mb-2">Compensation</h4>
+                <div className="space-y-1">
+                  <p><span className="font-medium">Desired Salary:</span> {displayData.compensation.desiredSalary}</p>
+                </div>
+              </div>
+
+              {/* Company Size Preferences */}
+              {displayData.companySizes && displayData.companySizes.length > 0 && (
+                <div className="bg-white p-4 rounded border md:col-span-2">
+                  <h4 className="font-semibold text-gray-900 mb-2">Company Size Preferences</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {displayData.companySizes.map((comp, index) => (
+                      <div key={index} className="text-xs">
+                        <span className="font-medium">{comp.size}:</span>{" "}
+                        <span className={
+                          comp.ideal ? "text-green-600" : 
+                          comp.interested ? "text-blue-600" : "text-gray-600"
+                        }>
+                          {comp.ideal ? "Ideal" : comp.interested ? "Yes" : "No"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="mt-4 p-3 bg-blue-100 rounded text-blue-800 text-sm">
+            <p><strong>Last Updated:</strong> {savedPreferencesData?.updatedAt ? new Date(savedPreferencesData.updatedAt).toLocaleString() : 'Unknown'}</p>
+          </div>
+        </div>
+      )}
+
       <form className="space-y-12" onSubmit={handleSubmit}>
         {/* US Work Authorization */}
         <section className="space-y-6 border-b pb-8">
@@ -552,15 +788,16 @@ export default function Preferences() {
           </div>
         </section>
 
+        {/* Success/Error Messages */}
         {isSuccess && (
           <div className="mb-4 p-3 rounded bg-green-100 text-green-800 border border-green-300">
-            Preferences submitted successfully!
+            ✅ {hasExistingPreferences ? "Preferences updated successfully!" : "Preferences saved successfully!"}
           </div>
         )}
 
         {isError && (
           <div className="mb-4 p-3 rounded bg-red-100 text-red-800 border border-red-300">
-            {errorMessage}
+            ❌ {errorMessage}
           </div>
         )}
 
@@ -573,21 +810,9 @@ export default function Preferences() {
               loading ? "opacity-70 cursor-not-allowed" : ""
             }`}
           >
-            {loading ? "Saving..." : "Save Preferences"}
+            {loading ? "Saving..." : hasExistingPreferences ? "Update Preferences" : "Save Preferences"}
           </button>
         </div>
-
-        {/* Overall form error summary (optional) */}
-        {/* {isSubmitted && Object.keys(errors).length > 0 && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-600">
-            <p className="font-medium">Please fix the following errors:</p>
-            <ul className="list-disc pl-5 mt-2">
-              {Object.values(errors).map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </div>
-        )} */}
       </form>
     </div>
   );

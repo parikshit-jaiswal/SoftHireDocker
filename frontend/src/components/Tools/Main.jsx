@@ -23,7 +23,7 @@ function Main() {
     const data = [
         {
             title: 'Immigration Skill Charge Calculator',
-            description: 'Easily check if your business meets the requirements to apply for a Sponsor Licence and start hiring international talent.',
+            description: 'Easily check if your business meets the requirements to apply for a Sponsor License and start hiring international talent.',
             button: 'Learn More',
             image: '/tools/img1.svg',
             bg: 'bg-white',
@@ -31,18 +31,18 @@ function Main() {
             link: "/imigration-skill-charge-calculator"
         },
         {
-            title: 'Sponsor Licence Eligibility Assessment',
+            title: 'Sponsor License Eligibility Assessment',
             description: 'Quickly determine the minimum salary needed to sponsor a skilled worker based on job role and visa type.',
             button: 'Learn More',
             image: '/tools/img2.svg',
             bg: 'bg-[#E9EEF4]',
             imgDir: "left",
-            link: "/sponsor-licence-assessment"
+            link: "/sponsor-license-assessment"
 
         },
         {
             title: 'Skilled Worker Minimum Salary Calculator',
-            description: 'Get an accurate estimate of all fees involved in applying for and maintaining a Sponsor Licence.',
+            description: 'Get an accurate estimate of all fees involved in applying for and maintaining a Sponsor License.',
             button: 'Learn More',
             image: '/tools/img3.svg',
             bg: 'bg-white',
@@ -50,7 +50,7 @@ function Main() {
             link: "/salary-calculator"
         },
         {
-            title: 'Sponsor Licence Cost Estimator',
+            title: 'Sponsor License Cost Estimator',
             description: 'Calculate the exact Immigration Skill Charges you’ll need to pay when hiring foreign workers.',
             button: 'Learn More',
             image: '/tools/img4.svg',

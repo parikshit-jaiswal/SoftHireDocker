@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Bell, Users, MessageCircle, ChevronRight } from 'lucide-react';
 import { useSelector } from 'react-redux';
+import { getStats } from '@/Api/RecruiterServices';
 
 function ActionCard({ title, description, buttonText, onButtonClick }) {
   return (
@@ -70,6 +71,21 @@ function NotificationComponent({ notification }) {
 export default function RecruiterHome() {
 
   const user = useSelector((state) => state.auth.user);
+
+  const [stats, setStats] = useState();
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await getStats();
+        setStats(data);
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const applicantStats = {
     title: "Applicants",

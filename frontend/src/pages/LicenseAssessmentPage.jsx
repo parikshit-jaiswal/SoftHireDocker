@@ -1,11 +1,11 @@
 import Footer from '@/components/Footer.jsx'
 import FAQSection from '@/components/Home/FAQSection.jsx'
-import Hero from '@/components/LicenceAssesment/Hero.jsx'
-import Main from '@/components/LicenceAssesment/Main.jsx'
+import Hero from '@/components/LicenseAssesment/Hero.jsx'
+import Main from '@/components/LicenseAssesment/Main.jsx'
 import Navbar from '@/components/Navbar.jsx'
 import React from 'react'
 
-function LicenceAssessmentPage() {
+function LicenseAssessmentPage() {
     return (
         <>
             <Navbar />
@@ -17,4 +17,4 @@ function LicenceAssessmentPage() {
     )
 }
 
-export default LicenceAssessmentPage
+export default LicenseAssessmentPage

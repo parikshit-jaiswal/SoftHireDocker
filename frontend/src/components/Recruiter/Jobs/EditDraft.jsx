@@ -8,7 +8,7 @@ import { locations } from '@/constants/locations';
 import { timeZoneOptions, positions, currencyOptions, roles, experienceOptions, skillOptions, companySizeOptions } from '@/constants/postJobOptions';
 import { toast } from 'react-toastify';
 import { Trash2 } from 'lucide-react';
-import { createJob, updateJob } from '@/Api/JobServices';
+import { createJob, deleteJob, updateJob } from '@/Api/JobServices';
 import { useNavigate } from 'react-router-dom';
 import useJob from '@/Context/JobContext/useJob';
 import { useSelector, useDispatch } from 'react-redux';
@@ -382,35 +382,25 @@ function EditDraft({ activeTab, setActiveTab }) {
     };
 
     // Add a handler to clear all form fields
-    const handleDelete = () => {
-        setTitle('');
-        setCompanyName('');
-        setCompanySize('');
-        setJobDescription('');
-        setJobType('');
-        setPrimaryRole('');
-        setAdditionalRoles([]);
-        setWorkExperience('');
-        setSkills([]);
-        setLocation([]);
-        setRelocationRequired(false);
-        setRelocationAssistance(false);
-        setRemotePolicy('');
-        setRemoteCulture('');
-        setHiresIn([]);
-        setAcceptWorldwide(false);
-        setCollaborationHours({ start: '', end: '', timeZone: '' });
-        setSalary({ min: '', max: '' });
-        setCurrency('');
-        setEquity({ min: '', max: '' });
-        setVisaSponsorship(false);
-        setAutoSkipVisaCandidates(false);
-        setAutoSkipRelocationCandidates(false);
-        setContactPerson({ name: '', position: '', location: '', experience: '' });
-        setIsDraft(false);
-        setValue('');
-        setErrors({});
-        setSuccessMessage('');
+    const handleDelete = async () => {
+        try {
+            setIsLoading(true);
+            // Call the delete job API
+            const response = await deleteJob(selectedJob._id);
+            if (response) {
+                // console.log(response)
+                toast.success("Job deleted successfully");
+                // Optionally, you can navigate back or reset the form
+                // remove the selected job from redux and jobs also
+                fetchJobs();
+                dispatch(setSelectedJob(null));
+            }
+        } catch (error) {
+            // console.log(error);
+            toast.error(error.response?.data?.message || "Failed to delete job");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     // Section title component for both mobile and desktop
@@ -517,6 +507,14 @@ function EditDraft({ activeTab, setActiveTab }) {
                     </nav>
                 </div>
             </div >
+        );
+    }
+
+    if (!selectedJob || !selectedJob._id) {
+        return (
+            <div className="flex justify-center items-center h-full">
+                <p className="text-gray-500">No job selected. Please select a job to edit.</p>
+            </div>
         );
     }
 

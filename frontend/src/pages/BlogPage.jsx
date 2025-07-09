@@ -3,40 +3,40 @@ import React from "react";
 const UKBlogPage = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 text-gray-800">
-      <h1 className="text-4xl font-bold mb-4">What Is a UK Sponsorship Licence?</h1>
+      <h1 className="text-4xl font-bold mb-4">What Is a UK Sponsorship License?</h1>
       <h2 className="text-xl font-semibold mb-6 text-gray-600">
         A Guide for Employers and International Candidates
       </h2>
 
       <div className="bg-white shadow rounded-lg p-6 mb-6">
         <p className="mb-4">
-          Hiring international talent is an essential option for UK businesses in certain industries. But at the heart of that process is one critical piece of the puzzle: the UK Sponsorship Licence.
+          Hiring international talent is an essential option for UK businesses in certain industries. But at the heart of that process is one critical piece of the puzzle: the UK Sponsorship License.
         </p>
         <p>
-          In this guide, we break down what a sponsorship licence is, why it matters, and what both employers and candidates need to know to navigate the system confidently.
+          In this guide, we break down what a sponsorship license is, why it matters, and what both employers and candidates need to know to navigate the system confidently.
         </p>
       </div>
 
       <section className="mb-8">
-        <h3 className="text-2xl font-semibold mb-2">🔍 What Is a Sponsorship Licence?</h3>
+        <h3 className="text-2xl font-semibold mb-2">🔍 What Is a Sponsorship License?</h3>
         <p className="mb-4">
-          A Sponsorship Licence is official permission from the UK Home Office that allows a company to legally employ non-UK residents under certain visa categories — most commonly, the Skilled Worker visa.
+          A Sponsorship License is official permission from the UK Home Office that allows a company to legally employ non-UK residents under certain visa categories — most commonly, the Skilled Worker visa.
         </p>
         <p className="mb-4">
           Once approved, the employer becomes a “licensed sponsor” and can issue Certificates of Sponsorship (CoS) to eligible foreign workers, enabling them to apply for a work visa.
         </p>
         <div className="bg-gray-100 p-4 rounded border font-semibold">
-          Key Fact: Without a sponsor licence, a UK company cannot legally sponsor most foreign nationals for a work visa.
+          Key Fact: Without a sponsor license, a UK company cannot legally sponsor most foreign nationals for a work visa.
         </div>
       </section>
 
       <section className="mb-8">
         <h3 className="text-2xl font-semibold mb-2">✅ Why It Matters for Employers</h3>
         <p className="mb-4">
-          For UK companies looking to access global talent, a sponsorship licence is essential. But it also comes with responsibilities.
+          For UK companies looking to access global talent, a sponsorship license is essential. But it also comes with responsibilities.
         </p>
         <ul className="list-disc pl-6 space-y-2">
-          <li>Apply with supporting documents and pay a licence fee</li>
+          <li>Apply with supporting documents and pay a license fee</li>
           <li>Understand and follow strict immigration compliance duties</li>
           <li>Maintain records, track employee absences, and report changes to the Home Office</li>
           <li>Prepare for potential Home Office audits</li>
@@ -45,7 +45,7 @@ const UKBlogPage = () => {
           Failure to comply with Immigration Law can have serious consequences.
         </p>
         <p>
-          At <strong>SoftHire</strong>, we help businesses through every step — from applying for a licence to managing day-to-day compliance.
+          At <strong>SoftHire</strong>, we help businesses through every step — from applying for a license to managing day-to-day compliance.
         </p>
       </section>
 
@@ -69,7 +69,7 @@ const UKBlogPage = () => {
         <h3 className="text-2xl font-semibold mb-2">🛠️ How SoftHire Supports Both Sides</h3>
         <p className="mb-4 font-semibold">For Employers:</p>
         <p>
-          SoftHire makes it easy to apply for a sponsorship licence, manage ongoing compliance, and recruit international candidates — all in one platform. Our AI tools handle reminders, document storage, and compliance workflows.
+          SoftHire makes it easy to apply for a sponsorship license, manage ongoing compliance, and recruit international candidates — all in one platform. Our AI tools handle reminders, document storage, and compliance workflows.
         </p>
         <p className="mt-4 font-semibold">For Candidates:</p>
         <p>
@@ -87,7 +87,7 @@ const UKBlogPage = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mt-6">
           <a href="#employers" className="bg-blue-600 text-white px-5 py-3 rounded-xl shadow hover:bg-blue-700 text-center">
-            ➡️ Employers: Start your sponsor licence application
+            ➡️ Employers: Start your sponsor license application
           </a>
           <a href="#candidates" className="bg-green-600 text-white px-5 py-3 rounded-xl shadow hover:bg-green-700 text-center">
             ➡️ Candidates: Explore sponsored jobs

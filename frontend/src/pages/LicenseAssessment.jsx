@@ -13,7 +13,7 @@ const assessmentQuestions = [
     },
     {
         text:
-            <>Do you have the mandatory documents required to submit a sponsor licence application? <span className='opacity-55'>*</span>
+            <>Do you have the mandatory documents required to submit a sponsor license application? <span className='opacity-55'>*</span>
                 <div className="opacity-70 text-sm font-light mt-2">
                     <p>Document Required-:</p>
                     <p>1. Business bank account</p>
@@ -170,7 +170,7 @@ const SearchableDropdown = ({ options, value, onChange, hasError, questionIndex 
     );
 };
 
-const LicenceAssessment = () => {
+const LicenseAssessment = () => {
     const navigate = useNavigate();
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState(assessmentQuestions.map(() => ''));
@@ -379,4 +379,4 @@ const LicenceAssessment = () => {
     );
 };
 
-export default LicenceAssessment;
+export default LicenseAssessment;
