@@ -1,16 +1,35 @@
-import React, { use, useEffect, useState } from 'react';
-import { Bell, Users, MessageCircle, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Users, Search, Plus, TrendingUp, Star, CheckCircle } from 'lucide-react';
 import { useSelector } from 'react-redux';
-import { getStats } from '@/Api/RecruiterServices';
+import { getRecruiterProfile, getStats } from '@/Api/RecruiterServices';
 
-function ActionCard({ title, description, buttonText, onButtonClick }) {
+function StatCard({ icon: Icon, label, value, color }) {
   return (
-    <div className="bg-white rounded-lg border-gray-400 border p-6">
-      <h2 className="text-lg font-medium text-gray-900 mb-3">{title}</h2>
-      <p className="text-gray-600 mb-4">{description}</p>
+    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium text-gray-600">{label}</p>
+          <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
+        </div>
+        <div className={`w-12 h-12 ${color} rounded-lg flex items-center justify-center`}>
+          <Icon className="w-6 h-6 text-white" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function QuickActionCard({ icon: Icon, title, description, buttonText, onClick, color }) {
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+      <div className={`w-12 h-12 ${color} rounded-lg flex items-center justify-center mb-4`}>
+        <Icon className="w-6 h-6 text-white" />
+      </div>
+      <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
+      <p className="text-gray-600 mb-4 text-sm">{description}</p>
       <button
-        onClick={onButtonClick}
-        className="bg-[#EA4C25] hover:bg-[#ea4c25cf] text-white px-4 py-2 rounded-md text-sm font-medium"
+        onClick={onClick}
+        className="w-full bg-[#EA4C25] hover:bg-[#d63e1e] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
       >
         {buttonText}
       </button>
@@ -18,50 +37,16 @@ function ActionCard({ title, description, buttonText, onButtonClick }) {
   );
 }
 
-function StatsCard({ title, timeFrame, stats }) {
+function TipCard({ icon: Icon, title, description }) {
   return (
-    <div className="bg-white rounded-lg border-gray-400 border p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-medium text-gray-900">{title}</h2>
-        <div className="flex items-center text-sm text-gray-500">
-          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          {timeFrame}
+    <div className="bg-white rounded-lg border border-gray-200 p-4">
+      <div className="flex items-start gap-3">
+        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+          <Icon className="w-4 h-4 text-blue-600" />
         </div>
-      </div>
-      <div className="flex justify-between items-center text-center">
-        {stats.map((stat, index) => (
-          <div key={index}>
-            <div className="text-3xl font-bold text-gray-900">{stat.value}</div>
-            <div className="text-sm text-gray-500">{stat.label}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function NotificationComponent({ notification }) {
-  const IconComponent = notification.icon;
-
-  return (
-    <div
-      className="bg-white rounded-lg border px-4 py-4 border-gray-400 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-    >
-      <div className="flex items-center gap-3">
-        <div className={`w-10 h-10 ${notification.bgColor} rounded-full flex items-center justify-center flex-shrink-0`}>
-          <IconComponent className={`w-5 h-5 ${notification.iconColor}`} />
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center justify-between">
-            <p className="text-gray-800 text-base font-medium leading-relaxed">
-              {notification.title}
-            </p>
-          </div>
-          <p className="text-gray-500 text-sm mt-1">
-            {notification.time}
-          </p>
+        <div>
+          <h4 className="font-medium text-gray-900 mb-1">{title}</h4>
+          <p className="text-sm text-gray-600">{description}</p>
         </div>
       </div>
     </div>
@@ -69,115 +54,147 @@ function NotificationComponent({ notification }) {
 }
 
 export default function RecruiterHome() {
-
   const user = useSelector((state) => state.auth.user);
-
-  const [stats, setStats] = useState();
+  const [stats, setStats] = useState({ applicants: 0, matches: 0 });
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const data = await getStats();
         setStats(data);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching stats:", error);
+        // Keep default values if API fails
       }
     };
 
     fetchStats();
   }, []);
 
-  const applicantStats = {
-    title: "Applicants",
-    timeFrame: "14 Days",
-    stats: [
-      { value: 15, label: "Applicants" },
-      { value: 9, label: "Matches" },
-      { value: 18, label: "Messages" }
-    ]
-  };
-
-  const sourcingStats = {
-    title: "Sourcing",
-    timeFrame: "14 Days",
-    stats: [
-      { value: 54, label: "Views" },
-      { value: 20, label: "Pitches" },
-      { value: 16, label: "Matches" }
-    ]
-  };
-
-  const discoverTalent = {
-    title: "Discover Top Talent for Your Organization",
-    description: "Leverage advanced filters to connect with the best candidates. Easily sort through profiles to find the right match for your company's hiring needs.",
-    buttonText: "Discover Talent",
-    onButtonClick: () => console.log("Discover Talent clicked")
-  };
-
-  const collaborate = {
-    title: "Collaborate Seamlessly with Your Hiring Team",
-    description: "Share candidate profiles, add notes, and keep your team aligned. Enhance the hiring process with unified team collaboration tools.",
-    buttonText: "Invite Team Members",
-    onButtonClick: () => console.log("Invite Team Members clicked")
-  };
-
-  const notifications = [
+  // Static tips for recruiters
+  const recruitingTips = [
     {
-      id: 1,
-      icon: Bell,
-      iconColor: 'text-blue-600',
-      bgColor: 'bg-blue-100',
-      title: 'You posted a job for Frontend Developer.',
-      time: '2 hours ago'
+      icon: Star,
+      title: "Write Clear Job Descriptions",
+      description: "Include specific requirements and company culture to attract the right candidates."
     },
     {
-      id: 2,
+      icon: CheckCircle,
+      title: "Respond Quickly",
+      description: "Fast response times improve candidate experience and increase acceptance rates."
+    },
+    {
+      icon: Search,
+      title: "Use Relevant Keywords",
+      description: "Optimize job postings with industry-specific terms to improve visibility."
+    },
+    {
       icon: Users,
-      iconColor: 'text-green-600',
-      bgColor: 'bg-green-100',
-      title: '3 candidates matched for UI/UX Designer role.',
-      time: '5 hours ago'
-    },
-    {
-      id: 3,
-      icon: MessageCircle,
-      iconColor: 'text-orange-500',
-      bgColor: 'bg-orange-100',
-      title: 'You received a message from John Doe.',
-      time: 'Yesterday'
+      title: "Build Talent Pools",
+      description: "Maintain relationships with candidates for future opportunities."
     }
   ];
 
+  const quickActions = [
+    {
+      icon: Search,
+      title: "Find Candidates",
+      description: "Search and discover talented candidates for your open positions",
+      buttonText: "Start Searching",
+      onClick: () => window.location.href = '/recruiter/discover',
+      color: "bg-blue-500"
+    },
+    {
+      icon: Plus,
+      title: "Post New Job",
+      description: "Create a new job posting to attract the right candidates",
+      buttonText: "Post Job",
+      onClick: () => window.location.href = '/recruiter/jobs/new',
+      color: "bg-green-500"
+    },
+    {
+      icon: Users,
+      title: "View Applicants",
+      description: "Review and manage all your job applicants and their profiles",
+      buttonText: "View Applicants",
+      onClick: () => window.location.href = '/recruiter/applicants',
+      color: "bg-[#EA4C25]"
+    }
+  ];
 
   return (
-    <div className="min-h-screen p-6 px-[7%] w-full">
-      <h1 className="text-2xl font-bold text-gray-900 mb-8">Welcome, {user?.fullName?.split(" ")[0]}</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <StatsCard {...applicantStats} />
-        <StatsCard {...sourcingStats} />
-      </div>
-
-      <div className="space-y-6">
-        <ActionCard {...discoverTalent} />
-        <ActionCard {...collaborate} />
-      </div>
-
-      <div className="mt-10">
-        <p className="text-2xl font-bold text-gray-900">Activity Feed</p>
-        <p className="text-sm text-gray-700">Here's a reminder of what you and your team have been up to recently</p>
-
-        <div className="space-y-4 mt-4">
-          {notifications.map((notification) => (
-            <NotificationComponent key={notification.id} notification={notification} />
-          ))}
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back, {user?.fullName?.split(" ")[0] || "Recruiter"}!
+          </h1>
+          <p className="text-gray-600">Here's an overview of your recruiting activity</p>
         </div>
 
-        <div className="mt-4">
-          <button className="text-red-500 hover:text-red-600 text-sm font-medium flex items-center gap-1 hover:underline transition-colors">
-            <span>View More</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
+        {/* Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <StatCard
+            icon={Users}
+            label="Total Applicants"
+            value={stats?.applicants || 0}
+            color="bg-[#EA4C25]"
+          />
+          <StatCard
+            icon={TrendingUp}
+            label="Matches Found"
+            value={stats?.matches || 0}
+            color="bg-green-500"
+          />
+          <StatCard
+            icon={Search}
+            label="Active Jobs"
+            value={stats?.activeJobs || 0}
+            color="bg-blue-500"
+          />
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {quickActions.map((action, index) => (
+              <QuickActionCard key={index} {...action} />
+            ))}
+          </div>
+        </div>
+
+        {/* Getting Started Section */}
+        {(stats?.applicants || 9) === 0 && (
+          <div className="bg-white rounded-xl border border-gray-200 p-8 text-center shadow-sm">
+            <div className="w-16 h-16 bg-[#EA4C25] rounded-full flex items-center justify-center mx-auto mb-4">
+              <Users className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Start Your Recruiting Journey</h3>
+            <p className="text-gray-600 mb-6 max-w-md mx-auto">
+              You haven't received any applicants yet. Post your first job or start searching for candidates to get started.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="bg-[#EA4C25] hover:bg-[#d63e1e] text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                Post Your First Job
+              </button>
+              <button className="border border-gray-300 hover:border-gray-400 text-gray-700 px-6 py-2 rounded-lg font-medium transition-colors">
+                Browse Candidates
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Recruiting Tips Section */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">Recruiting Tips</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {recruitingTips.map((tip, index) => (
+              <TipCard key={index} {...tip} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

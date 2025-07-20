@@ -116,7 +116,7 @@ export default function JobDetailsPage() {
     return true;
   };
 
-  // ✅ UPDATED: Simplified application submission with simple toast
+  // ✅ UPDATED: Enhanced application submission with resume check
   const submitJobApplication = async () => {
     if (isApplied || applicationSubmitted) {
       toast.info("You have already applied to this job.");
@@ -177,6 +177,30 @@ export default function JobDetailsPage() {
       }
       
       const errorMessage = error.response?.data?.message || error.message;
+      
+      // ✅ NEW: Handle resume requirement specifically
+      if (errorMessage && errorMessage.includes("resume")) {
+        toast.error(
+          <div className="flex flex-col">
+            <span className="font-medium">Resume Required</span>
+            <span className="text-sm">Please upload your resume before applying for jobs.</span>
+            <button 
+              onClick={() => navigate('/dashboard/profile')}
+              className="mt-2 text-blue-600 hover:text-blue-800 text-sm underline"
+            >
+              Upload Resume Now →
+            </button>
+          </div>,
+          {
+            duration: 6000, // Show for 6 seconds
+            position: 'top-center',
+          }
+        );
+        
+        // Reset flags since application wasn't submitted
+        setApplicationSubmitted(false);
+        return;
+      }
       
       if (errorMessage && errorMessage.includes("already applied")) {
         setApplicationSubmitted(true);

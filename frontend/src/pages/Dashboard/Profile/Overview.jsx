@@ -33,29 +33,35 @@ const Overview = () => {
     }
   };
 
+  // ✅ FIXED: Use dedicated resume API instead of profile API
   const loadResumeData = async () => {
     try {
-      // Check localStorage first
-      const localResume = localStorage.getItem("resume");
-      if (localResume) {
-        setResumeUrl(localResume);
-        return;
-      }
-
-      // Try to get from user profile
-      const result = await userService.getProfile();
+      console.log('🔄 Loading resume for current user...');
+      
+      // ✅ REMOVED: localStorage check - avoid stale data
+      // Use the dedicated resume API to get current user's resume
+      const result = await userService.getResume();
+      
       if (result.success && result.data?.resume) {
+        console.log('✅ Found resume for current user:', result.data.resume);
         setResumeUrl(result.data.resume);
-        localStorage.setItem("resume", result.data.resume);
+      } else {
+        console.log('📝 No resume found for current user');
+        setResumeUrl(null);
       }
     } catch (error) {
-      console.error("Failed to load resume:", error);
+      console.error('❌ Failed to load resume:', error);
+      setResumeUrl(null);
     }
   };
 
   const handleResumeClick = () => {
     if (resumeUrl) {
-      window.open(resumeUrl, "_blank");
+      // ✅ Handle both Cloudinary URLs and relative paths
+      const fullUrl = resumeUrl.startsWith('http') 
+        ? resumeUrl 
+        : `${import.meta.env.VITE_SERVER_URL}${resumeUrl}`;
+      window.open(fullUrl, "_blank");
     } else {
       alert("No resume uploaded yet. Please upload your resume in the Resume/CV tab.");
     }
@@ -166,18 +172,18 @@ const Overview = () => {
                   )
                 )}
                 
-                {/* Resume Button */}
+                {/* ✅ UPDATED: Resume Button with better status indication */}
                 <div className="flex items-center space-x-1">
                   <button
                     className={`flex items-center space-x-1 px-3 py-1 rounded text-sm transition-colors ${
                       resumeUrl 
                         ? "bg-green-100 text-green-800 hover:bg-green-200" 
-                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                        : "bg-orange-100 text-orange-800 hover:bg-orange-200"
                     }`}
                     onClick={handleResumeClick}
                   >
                     {resumeUrl ? <Eye size={14} /> : <Download size={14} />}
-                    <span>{resumeUrl ? "View Resume" : "No Resume"}</span>
+                    <span>{resumeUrl ? "View Resume" : "Upload Resume"}</span>
                   </button>
                 </div>
               </div>

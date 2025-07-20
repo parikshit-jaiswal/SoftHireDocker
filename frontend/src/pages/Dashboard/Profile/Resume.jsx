@@ -15,26 +15,34 @@ export default function ResumeUpload() {
     loadExistingResume();
   }, []);
 
+  // ✅ FIXED: Remove localStorage usage to prevent cross-user contamination
   const loadExistingResume = async () => {
     try {
-      // Check localStorage first
-      const localResume = localStorage.getItem("resume");
-      if (localResume) {
-        setCurrentResume(localResume);
-      }
-
-      // Also try to get from user profile
+      console.log('🔄 Loading existing resume for current user...');
+      
+      // ✅ REMOVED: localStorage check - this was causing cross-user contamination
+      // Only get resume from API to ensure it belongs to current user
       const result = await userService.getProfile();
+      
       if (result.success && result.data?.resume) {
+        console.log('✅ Found resume for current user:', result.data.resume);
         setCurrentResume(result.data.resume);
         setResumeData({
           url: result.data.resume,
           uploadedAt: result.data.updatedAt,
-          name: 'Resume.pdf' // Default name since we might not have the original filename
+          name: 'Resume.pdf'
         });
+      } else {
+        console.log('📝 No resume found for current user');
+        // ✅ Clear any stale data
+        setCurrentResume(null);
+        setResumeData(null);
       }
     } catch (error) {
       console.error("Failed to load existing resume:", error);
+      // ✅ Clear data on error
+      setCurrentResume(null);
+      setResumeData(null);
     }
   };
 
@@ -73,7 +81,7 @@ export default function ResumeUpload() {
   };
 
   const handleFiles = (file) => {
-    // Use userService validation
+    // ✅ FIXED: Use userService validation
     const validation = userService.validateFile(file, ['application/pdf'], 5 * 1024 * 1024);
 
     if (validation.isValid) {
@@ -85,6 +93,7 @@ export default function ResumeUpload() {
     }
   };
 
+  // ✅ FIXED: Upload with better error handling
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -97,28 +106,36 @@ export default function ResumeUpload() {
     setError(null);
 
     try {
+      console.log('📤 Uploading resume:', file.name);
       const result = await userService.uploadResume(file);
 
       if (result.success) {
+        console.log('✅ Resume uploaded successfully:', result.data);
+        
         setFile(null);
-        const resumeUrl = result.data.resumeUrl || result.data.resume;
-        localStorage.setItem("resume", resumeUrl);
+        const resumeUrl = result.data.resumeUrl || result.data.data?.resumeUrl;
+        
+        // ✅ REMOVED: localStorage operations
         setCurrentResume(resumeUrl);
         setResumeData({
           url: resumeUrl,
           uploadedAt: new Date().toISOString(),
           name: file.name
         });
+        
         toast.success(result.message);
 
         // Reset file input
         const fileInput = document.getElementById("resume-upload");
         if (fileInput) fileInput.value = "";
+        
       } else {
+        console.error('❌ Resume upload failed:', result.message);
         setError(result.message);
         toast.error(result.message);
       }
     } catch (error) {
+      console.error('💥 Resume upload error:', error);
       const errorMessage = "Failed to upload resume. Please try again.";
       setError(errorMessage);
       toast.error(errorMessage);
@@ -129,14 +146,21 @@ export default function ResumeUpload() {
 
   const handleViewResume = () => {
     if (currentResume) {
-      window.open(currentResume, "_blank");
+      // ✅ Handle both full URLs and relative paths
+      const resumeUrl = currentResume.startsWith('http') 
+        ? currentResume 
+        : `${import.meta.env.VITE_SERVER_URL}${currentResume}`;
+      window.open(resumeUrl, "_blank");
     }
   };
 
   const handleDownloadResume = () => {
     if (currentResume) {
       const link = document.createElement('a');
-      link.href = currentResume;
+      const resumeUrl = currentResume.startsWith('http') 
+        ? currentResume 
+        : `${import.meta.env.VITE_SERVER_URL}${currentResume}`;
+      link.href = resumeUrl;
       link.download = resumeData?.name || 'resume.pdf';
       document.body.appendChild(link);
       link.click();
@@ -144,12 +168,31 @@ export default function ResumeUpload() {
     }
   };
 
-  const handleDeleteResume = () => {
+  // ✅ FIXED: Delete resume properly with API call
+  const handleDeleteResume = async () => {
     if (window.confirm("Are you sure you want to delete your current resume?")) {
-      localStorage.removeItem("resume");
-      setCurrentResume(null);
-      setResumeData(null);
-      toast.success("Resume deleted successfully");
+      try {
+        setIsLoading(true);
+        
+        // ✅ Call API to delete resume from server
+        const result = await userService.deleteResume();
+        
+        if (result.success) {
+          setCurrentResume(null);
+          setResumeData(null);
+          toast.success("Resume deleted successfully");
+        } else {
+          toast.error(result.message || "Failed to delete resume");
+        }
+        
+        // Reload to ensure clean state
+        await loadExistingResume();
+      } catch (error) {
+        console.error('Error deleting resume:', error);
+        toast.error("Failed to delete resume");
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 

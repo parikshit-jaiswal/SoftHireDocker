@@ -4,6 +4,7 @@ import { jobRoles } from "@/constants/dashboard";
 // import userService from "@/api/userService"; // Fixed path
 import profileService from "@/Api/profileService"; // Add profileService
 import { profileImageUpload } from "@/Api/profile";
+import { toast } from "react-toastify";
 
 function EditProfile() {
   // Form state
@@ -60,6 +61,7 @@ function EditProfile() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [profileUrl, setProfileUrl] = useState("/api/placeholder/56/56");
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false); // Add this state
 
   const fileInputRef = useRef(null);
 
@@ -298,35 +300,43 @@ function EditProfile() {
     });
   };
 
-const handleProfileImage = async () => {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
+  const handleProfileImage = async () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
 
-  input.onchange = async (event) => {
-    const file = event.target.files[0];
-    if (!file) {
-      // console.log("No file selected.");
-      return;
-    }
+    input.onchange = async (event) => {
+      const file = event.target.files[0];
+      if (!file) {
+        return;
+      }
 
-    // console.log("Selected file:", file); // ✅ This should show file info
+      // Check for webp file type
+      if (file.type === "image/webp" || file.name.toLowerCase().endsWith(".webp")) {
+        toast.error("WebP images are not supported. Please upload a JPG or PNG image.");
+        return;
+      }
 
-    const formData = new FormData();
-    formData.append("profilePhoto", file);
+      setIsUploadingImage(true); // Start loader
+      try {
+        // Use profileService for upload
+        const result = await profileService.uploadProfileImage(file);
+        if (result.success && result.data?.image?.imageUrl) {
+          setProfileUrl(result.data.image.imageUrl);
+        } else {
+          toast.error(result.message || "Failed to upload image.");
+          console.error("Upload failed:", result.message || result.error);
+        }
+      } catch (error) {
+        toast.error("Failed to upload image.");
+        console.error("Upload failed:", error);
+      } finally {
+        setIsUploadingImage(false); // End loader
+      }
+    };
 
-    try {
-      const response = await profileImageUpload(formData);
-      // console.log("Upload success:", response);
-      setProfileUrl(response.image.imageUrl);
-    } catch (error) {
-      console.error("Upload failed:", error);
-    }
+    input.click();
   };
-
-  input.click();
-};
-
 
   // Submit the form to the API
   const handleSubmit = async (e) => {
@@ -423,20 +433,25 @@ const handleProfileImage = async () => {
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-200">
-                  <img
-                    src={profileUrl}
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                  {isUploadingImage ? (
+                    <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <img
+                      src={profileUrl}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
 
                 <button
                   type="button"
                   className="border rounded-lg px-4 py-2 text-sm hover:bg-gray-100"
                   onClick={handleProfileImage}
+                  disabled={isUploadingImage}
                 >
-                  Upload a new photo
+                  {isUploadingImage ? "Uploading..." : "Upload a new photo"}
                 </button>
 
                 {/* Hidden file input */}

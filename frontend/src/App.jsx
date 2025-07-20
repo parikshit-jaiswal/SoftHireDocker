@@ -75,6 +75,7 @@ import Service from "./pages/Dashboard/Service.jsx";
 import AboutSponcerCompliance from "./pages/AboutSponcerCompliance.jsx";
 import PaymentSuccessPage from "./pages/payment/PaymentSuccessPage.jsx";
 import PaymentFailedPage from "./pages/payment/PaymentFailedPage.jsx";
+import RecruiterProfile from "./pages/Recruiter/RecruiterProfile.jsx";
 
 function App() {
   return (
@@ -175,6 +176,7 @@ function App() {
                   <Route path="/recruiter/discover" element={<RecruiterDiscover />} />
                   <Route path="/recruiter/messages" element={<RecruiterChatPage />} />
                   <Route path="/recruiter/chat" element={<RecruiterChatPage />} />
+                  <Route path="/recruiter/profile" element={<RecruiterProfile />} />
                 </Route>
 
                 <Route path="/sponsorship-license-application" element={<RecruiterSponcerLicenseLayout />} >

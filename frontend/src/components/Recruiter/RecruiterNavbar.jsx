@@ -41,7 +41,7 @@ function RecruiterNavbar() {
         setIsMobileMenuOpen(false);
     }, [location.pathname]);
 
-   
+
     const handleLogout = async () => {
         setLogoutLoading(true);
         try {
@@ -49,7 +49,7 @@ function RecruiterNavbar() {
             if (response.status === 200) {
                 localStorage.removeItem('token');
                 localStorage.removeItem('persist:root');
-                window.location.href = '/'; 
+                window.location.href = '/';
                 toast.success('Logged out successfully!');
             } else {
                 toast.error('Logout failed. Please try again.');
@@ -101,8 +101,8 @@ function RecruiterNavbar() {
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             {/* Profile and Settings remain unchanged */}
-                            <DropdownMenuItem>Profile</DropdownMenuItem>
-                            <DropdownMenuItem>Settings</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => window.location.href = '/recruiter/profile'}>Profile</DropdownMenuItem>
+                            {/* <DropdownMenuItem>Settings</DropdownMenuItem> */}
                             {/* Logout with AlertDialog, styled to match other items */}
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>

@@ -11,8 +11,31 @@ const userAPI = axios.create({
   withCredentials: true,
 });
 
-// Request interceptor to add auth token
+// ✅ Create separate API instance for resume operations
+const resumeAPI = axios.create({
+  baseURL: `${API_BASE_URL}/api/resume`,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
+});
+
+// Request interceptor to add auth token for userAPI
 userAPI.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// ✅ Request interceptor for resumeAPI
+resumeAPI.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -27,6 +50,18 @@ userAPI.interceptors.request.use(
 
 // Response interceptor for error handling
 userAPI.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+// ✅ Response interceptor for resumeAPI
+resumeAPI.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
@@ -90,17 +125,24 @@ const userService = {
     }
   },
 
-  // Upload resume
+  // ✅ Upload resume using resumeAPI
   uploadResume: async (file) => {
     try {
-      if (file && file.type !== 'application/pdf') {
+      if (!file) {
+        return {
+          success: false,
+          message: 'No file selected',
+        };
+      }
+
+      if (file.type !== 'application/pdf') {
         return {
           success: false,
           message: 'Please upload a PDF file only',
         };
       }
 
-      if (file && file.size > 5 * 1024 * 1024) {
+      if (file.size > 5 * 1024 * 1024) {
         return {
           success: false,
           message: 'File size should be less than 5MB',
@@ -110,24 +152,83 @@ const userService = {
       const formData = new FormData();
       formData.append('resume', file);
 
-      const response = await userAPI.post('/upload-resume', formData, {
+      console.log('📤 Uploading resume to /api/resume');
+
+      const response = await resumeAPI.patch('/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
+      console.log('✅ Resume upload response:', response.data);
+
       return {
         success: true,
-        data: response.data,
+        data: response.data.data,
         message: response.data.message || 'Resume uploaded successfully',
       };
     } catch (error) {
+      console.error('💥 Resume upload error:', error);
       return {
         success: false,
         message: error.response?.data?.message || 'Failed to upload resume',
         error: error.response?.data || error.message,
       };
     }
+  },
+
+  // ✅ Get resume using resumeAPI
+  getResume: async () => {
+    try {
+      const response = await resumeAPI.get('/');
+      return {
+        success: true,
+        data: response.data.data,
+        message: response.data.message,
+      };
+    } catch (error) {
+      console.error('Resume fetch error:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to fetch resume',
+        error: error.response?.data || error.message,
+      };
+    }
+  },
+
+  // ✅ Delete resume using resumeAPI
+  deleteResume: async () => {
+    try {
+      const response = await resumeAPI.delete('/');
+      return {
+        success: true,
+        message: response.data.message || 'Resume deleted successfully',
+      };
+    } catch (error) {
+      console.error('Resume delete error:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to delete resume',
+        error: error.response?.data || error.message,
+      };
+    }
+  },
+
+  // ✅ Validate file method
+  validateFile: (file, allowedTypes = ['application/pdf'], maxSize = 5 * 1024 * 1024) => {
+    if (!file) {
+      return { isValid: false, message: 'No file selected' };
+    }
+
+    if (!allowedTypes.includes(file.type)) {
+      return { isValid: false, message: 'Please upload a PDF file only' };
+    }
+
+    if (file.size > maxSize) {
+      return { isValid: false, message: 'File size should be less than 5MB' };
+    }
+
+    return { isValid: true, message: 'File is valid' };
   },
 
   // Get applied jobs - Fixed to handle correct response structure
@@ -210,29 +311,6 @@ const userService = {
         error: error.response?.data || error.message,
       };
     }
-  },
-
-  // Helper function to validate file
-  validateFile: (file, allowedTypes = ['application/pdf'], maxSize = 5 * 1024 * 1024) => {
-    if (!file) {
-      return { isValid: false, message: 'No file selected' };
-    }
-
-    if (!allowedTypes.includes(file.type)) {
-      return { 
-        isValid: false, 
-        message: `Invalid file type. Allowed types: ${allowedTypes.join(', ')}` 
-      };
-    }
-
-    if (file.size > maxSize) {
-      return { 
-        isValid: false, 
-        message: `File size too large. Maximum size: ${maxSize / (1024 * 1024)}MB` 
-      };
-    }
-
-    return { isValid: true };
   },
 
   // Enhanced helper function to format application data - Updated for new API structure

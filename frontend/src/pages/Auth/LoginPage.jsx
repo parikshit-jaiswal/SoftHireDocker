@@ -98,7 +98,7 @@ const LoginPage = () => {
                 subtitle: "Access your recruitment dashboard to find top talent",
                 buttonText: "Login as Recruiter",
                 signupText: "Sign up as Recruiter",
-                signupLink: "/signup?role=recruiter",
+                signupLink: "recruiter/signup",
                 switchText: "Looking for jobs? Login as Candidate",
                 switchLink: "/login?role=candidate",
                 roleColor: "text-blue-600",
@@ -226,16 +226,24 @@ const LoginPage = () => {
                                         `${import.meta.env.VITE_SERVER_URL}/api/auth/google-login`,
                                         { 
                                             token: credential,
-                                            role: userRole // ✅ ADD: Send role to backend
+                                            role: userRole // Send intended role to backend
                                         },
                                         { withCredentials: true }
                                     );
 
                                     const { token, user } = res.data;
 
+                                    // ✅ Role check: Only allow navigation if roles match
+                                    if (user.role !== userRole) {
+                                        setMessage(
+                                          `❌ This account is registered as ${user.role}`
+                                        );
+                                        return;
+                                    }
+
                                     dispatch(setAuthUser(user));
                                     localStorage.setItem("token", token);
-                                    if (user?.role === "recruiter") {
+                                    if (user.role === "recruiter") {
                                         return navigate("/recruiter");
                                     } else {
                                         return navigate("/dashboard");
