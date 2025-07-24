@@ -193,7 +193,7 @@ const ScheduleDemoForm = () => {
 
           <div className="flex justify-center">
             <ReCAPTCHA
-              sitekey="6Lez5SMrAAAAAK4-qPMmfAJ-bSxnIOtGLxcFVfKo"
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
               onChange={(token) => setCaptchaToken(token)}
               ref={recaptchaRef}
             />

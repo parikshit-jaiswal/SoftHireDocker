@@ -54,7 +54,7 @@ export default function JobSearch() {
 
   const handleJobSelect = (job) => {
     dispatch(setSelectedJob(job));
-    navigate(`/dashboard/job/${job._id}`);
+    navigate(`/dashboard/job-details/${job._id}`);
   };
 
   // Check if a job has been applied to
